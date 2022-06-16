@@ -58,7 +58,7 @@
 
         // select all product buttons
         const productBtns = [...document.querySelectorAll('.add-product-btn')]
-        
+
         // attach the handler to each product button
         productBtns.forEach(btn => btn.addEventListener('click', handleAddProduct))
 
@@ -69,13 +69,57 @@
         placeOrderBtn.addEventListener('click', async event => {
             editable = false
             renderItems(items)
-            // [ ] TODO: send the order to the api
+            // alert('TODO: send the order to api gateway as a POST message')
+            // [x] TODO: send the order to the api
+            const url = 'https://qfzd0k4jfj.execute-api.us-east-2.amazonaws.com/dev/orders'
+            const options = {
+                method: 'POST',
+                body: JSON.stringify({
+                    id: Date.now(),
+                    customer: 'diegotrs',
+                    items: items,
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+
+            try {
+                const res = await fetch(url, options)
+                const responseData = await res.json()
+            } catch (err) {
+                console.error(err)
+            }
         })
 
         async function getOrders() {
-            // [ ] TODO: get orders from api
+            // [x] TODO: get orders from api
+            const url = 'https://qfzd0k4jfj.execute-api.us-east-2.amazonaws.com/dev/orders'
+            return await fetch(url).then(res => res.json())
+        }
+        
+        getOrders().then(orders => console.log('orders', orders))
+
+
+
+        /* example request using fetch api
+
+        const url = 'https://path.to.api.com/resource'
+
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }
 
+        // send POST request
+        fetch(url, options)
+            .then(res => res.json())
+            .then(res => console.log(res))
+            .catch(error => console.error(error))
+        */
 
 
     </script>
