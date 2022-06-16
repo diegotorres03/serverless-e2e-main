@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "api-serverless-e2e-executor",
+    "name": "api-serverless-e2e",
+    "region": "us-east-2"
+  },
+  "api": {
+    "id": "qfzd0k4jfj",
+    "module": "api"
+  }
+}

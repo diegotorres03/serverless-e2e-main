@@ -1,0 +1,21 @@
+{
+  "name": "api-serverless-e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "create": "claudia create --api-module api --version dev --region us-east-2",
+    "deploy:dev": "claudia update --version dev",
+    "deploy:prod": "claudia update --version prod",
+    "_note:claudia-documentation": "https://www.claudiajs.com/documentation.html"
+  },
+  "author": "Diego Torres",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1155.0",
+    "claudia-api-builder": "^4.1.2"
+  },
+  "devDependencies": {
+    "claudia": "^5.14.1"
+  }
+}
