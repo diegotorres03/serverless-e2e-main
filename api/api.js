@@ -1,21 +1,5 @@
 // using claudia api builder
 
-const ApiBuilder = require('claudia-api-builder')
-const api = new ApiBuilder()
-
-module.exports = api
-
-
-const orders = [{
-    id: 1,
-    items: [
-        { type: 'food', name: 'croisant', qty: 1 },
-        { type: 'drink', name: 'capuccino', qty: 1 },
-    ],
-    customer: 1, 
-    staff: 1
-}]
-
 
 /**
  * @typedef {{
@@ -33,6 +17,23 @@ const orders = [{
  *  staff: string
  * }} OrderJSON
  */
+
+
+const ApiBuilder = require('claudia-api-builder')
+const api = new ApiBuilder()
+
+module.exports = api
+
+
+const orders = [{
+    id: 1,
+    items: [
+        { type: 'food', name: 'croisant', qty: 1 },
+        { type: 'drink', name: 'capuccino', qty: 1 },
+    ],
+    customer: 1, 
+    staff: 1
+}]
 
 class Order {
     /** @param {OrderJSON} json */
@@ -75,6 +76,7 @@ class Order {
  * 
  */
 api.get('/orders', request => {
+    // [ ] TODO get all orders from dynamodb
     return orders
 })
 
@@ -106,6 +108,7 @@ api.get('/orders', request => {
 api.post('/orders', request => {
     const order = new Order(request.body)
     orders.push(order)
+    // [ ] TODO save order on dynamodb table
     return order
 })
 
@@ -138,5 +141,6 @@ api.patch('/orders/{id}', request => {
     const orderIndex = orders.findIndex(order => order.id === request.path.id)
     if(orderIndex === -1) return new Error('Not foud')
     orders[orderIndex].status = request.body.status
+    // [ ] TODO: patch an order on dynamodb table
     return
 })
