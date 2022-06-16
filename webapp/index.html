@@ -1,12 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>some app</title>
 </head>
+
 <body>
-    
+
+    <section>
+        <ol class="shopping-cart">
+        </ol>
+    </section>
+
+    <hr>
+
+    <section>
+        <h1>Products</h1>
+        <ul>
+            <li><button id="add-coffe-btn" class="add-product-btn" data-name="coffe" data-type="beberage">coffe</button>
+            </li>
+            <li><button id="add-capuccino-btn" class="add-product-btn" data-name="capuccino"
+                    data-type="beberage">capuccino</button></li>
+            <li><button id="add-chocolate-btn" class="add-product-btn" data-name="hot chocolate"
+                    data-type="beberage">hot chocolate</button></li>
+            <li><button id="add-xxx-btn" class="add-product-btn" data-name="croisant" data-type="meal">croisant</button>
+            </li>
+            <li><button id="add-avocado-btn" class="add-product-btn" data-name="avocado toast" data-type="meal">avocado
+                    toast</button></li>
+        </ul>
+        <button id="place-order-btn">Place order</button>
+    </section>
+    <hr>
+    <script>
+
+        const items = []
+        let editable = true
+
+        const renderItems = items => {
+            const list = document.querySelector('.shopping-cart')
+            const listItems = items.map(item =>
+                `<li data-type="${item.type}"  >${item.name} ${editable ? `<button>X</button>` : ''} </li>`)
+            list.innerHTML = listItems.join('\n')
+        }
+
+        // handle click on each product button
+        const handleAddProduct = event => {
+            console.log(event)
+            console.log(event.target)
+            console.log(event.target.dataset)
+            const data = event.target.dataset
+            items.push({ name: data.name, type: data.type, qty: 1 })
+            renderItems(items)
+        }
+
+        // select all product buttons
+        const productBtns = [...document.querySelectorAll('.add-product-btn')]
+        
+        // attach the handler to each product button
+        productBtns.forEach(btn => btn.addEventListener('click', handleAddProduct))
+
+        // select the place order button
+        const placeOrderBtn = document.querySelector('#place-order-btn')
+
+        // add handler to place order button
+        placeOrderBtn.addEventListener('click', async event => {
+            editable = false
+            renderItems(items)
+            // [ ] TODO: send the order to the api
+        })
+
+        async function getOrders() {
+            // [ ] TODO: get orders from api
+        }
+
+
+
+    </script>
+
 </body>
+
 </html>
