@@ -149,22 +149,25 @@ api.post('/orders', async request => {
  * 
  * 
  */
-api.patch('/orders/{id}', async request => {
+api.patch('/orders/{customer}/{id}', async request => {
     
-    const orderId = request.pathParams.id
     // const orderIndex = orders.findIndex(order => order.id === orderId)
     // if(orderIndex === -1) return new Error('Not found')
     // orders[orderIndex].status = request.body.status
-    // [ ] TODO: patch an order on dynamodb table
+   
+    // [x] TODO: patch an order on dynamodb table
+    const orderId = request.pathParams.id
+    const cusotmer = request.pathParams.customer 
+    const status = request.body.status
     console.log('updating orderId:', orderId)
     const res = await dynamo.update({
         TableName: ordersTable,
         Key: {
             id: orderId,
-            customer: 'diegotrs',
+            customer: cusotmer,
         },
         ExpressionAttributeNames: {'#status': 'status'},
-        ExpressionAttributeValues: {':status': 'queued'},
+        ExpressionAttributeValues: {':status': status},
         UpdateExpression: `set #status = :status`,
 
     }).promise()
