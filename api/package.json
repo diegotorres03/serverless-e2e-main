@@ -16,6 +16,7 @@
     "claudia-api-builder": "^4.1.2"
   },
   "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
     "claudia": "^5.14.1"
   }
 }

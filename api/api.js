@@ -21,6 +21,9 @@
 
 const ApiBuilder = require('claudia-api-builder')
 const api = new ApiBuilder()
+const aws = require('aws-sdk')
+
+const dynamo = new aws.DynamoDB.DocumentClient({region: 'us-east-2'})
 
 module.exports = api
 
@@ -75,9 +78,12 @@ class Order {
  * 
  * 
  */
-api.get('/orders', request => {
-    // [ ] TODO get all orders from dynamodb
-    return orders
+api.get('/orders', async request => {
+    // [x] TODO get all orders from dynamodb
+    const res = await dynamo.scan({
+        TableName: 'webappStack-orders46FA7C19-EPHWZCG1QZ5', // 'your-table-name',
+    }).promise()
+    return res.Items
 })
 
 /**

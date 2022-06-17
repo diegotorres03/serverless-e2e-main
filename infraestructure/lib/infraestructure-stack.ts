@@ -1,17 +1,20 @@
-import { 
-  Stack, 
+import {
+  Stack,
   StackProps,
   aws_s3 as S3,
   aws_s3_deployment as S3Deployment,
   aws_cloudfront as CloudFront,
   aws_cloudfront_origins as CloudFrontOrigins,
+  aws_dynamodb as DynamoDB,
+  aws_lambda as Lambda,
+  aws_iam as IAM,
 } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 
+import * as apiConfig from '../../api/claudia.json'
 
 export class InfraestructureStack extends Stack {
 }
-
 
 export class WebAppStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -20,8 +23,8 @@ export class WebAppStack extends Stack {
     const webappBucket = new S3.Bucket(this, 'webapp-artifact', {
       accessControl: S3.BucketAccessControl.PRIVATE,
       cors: [{
-        allowedMethods: [ S3.HttpMethods.GET ],
-        allowedOrigins: [ '*' ],
+        allowedMethods: [S3.HttpMethods.GET],
+        allowedOrigins: ['*'],
 
         // the properties below are optional
         allowedHeaders: ['Authorization'],
@@ -30,11 +33,11 @@ export class WebAppStack extends Stack {
     })
 
     const webappDeployment = new S3Deployment.BucketDeployment(this, 'deployStaticWebapp', {
-      sources: [ S3Deployment.Source.asset('../webapp') ],
+      sources: [S3Deployment.Source.asset('../webapp')],
       destinationBucket: webappBucket,
     })
 
-    
+
     // [x] TODO: create CloudFront distribution [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-cloudfront-readme.html)
     const originAccessIdentity = new CloudFront.OriginAccessIdentity(this, 'OriginAccessIdentity')
 
@@ -48,8 +51,25 @@ export class WebAppStack extends Stack {
         origin: new CloudFrontOrigins.S3Origin(webappBucket, { originAccessIdentity })
       }
     })
-    
-  
+
+
     // [ ] TODO: create Route 53 record set [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-route53-readme.html)
+
+    // [ ] TODO: create DynamoDB orders table
+    const ordersTable = new DynamoDB.Table(this, 'orders', {
+      partitionKey: { name: 'customer', type: DynamoDB.AttributeType.STRING },
+      sortKey: { name: 'id', type: DynamoDB.AttributeType.STRING },
+      billingMode: DynamoDB.BillingMode.PAY_PER_REQUEST,
+    })
+
+    const apiLambda = Lambda.Function.fromFunctionName(this, 'apiLambda', apiConfig.lambda.name)
+
+    const lambdaRole = IAM.Role.fromRoleName(this, 'lambdaRole', apiConfig.lambda.role)
+    ordersTable.grantReadWriteData(lambdaRole)
+
+    // dealing with lambda access to dynamo
+
+
+
   }
 }
