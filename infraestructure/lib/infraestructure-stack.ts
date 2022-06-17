@@ -62,14 +62,8 @@ export class WebAppStack extends Stack {
       billingMode: DynamoDB.BillingMode.PAY_PER_REQUEST,
     })
 
-    const apiLambda = Lambda.Function.fromFunctionName(this, 'apiLambda', apiConfig.lambda.name)
-
     const lambdaRole = IAM.Role.fromRoleName(this, 'lambdaRole', apiConfig.lambda.role)
     ordersTable.grantReadWriteData(lambdaRole)
-
-    // dealing with lambda access to dynamo
-
-
 
   }
 }
