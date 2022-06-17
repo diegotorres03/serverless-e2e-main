@@ -11,4 +11,5 @@
 6. git tag -a ch2.1.2 -m "use api endpoints from webapp"
 7. git tag -a ch3.1.1 -m "create a dynamodb table"
 8. git tag -a ch3.1.2 -m "connect api to table"
-9. 
+9. git tag -a ch4.1.1 -m "queue orders for processing"
+10. 
