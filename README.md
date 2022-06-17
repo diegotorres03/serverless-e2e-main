@@ -28,9 +28,9 @@
        1. [ ] create a lambda triggered by sqs
        2. [ ] create a lambda triggered by dynamo that nofify users using sns
 5.  **Security:**
-   3. **Web App Access Control (Cognito):** How to secure app?
+   1. **Web App Access Control (Cognito):** How to secure app?
        1. [ ] create CDK user pool and hosted UI
        2. [ ] create a Cognito hosted UI for this application
-   4. **API Access Control (Cognito authorizer):**
+   2. **API Access Control (Cognito authorizer):**
        1. [ ] create the cognito authorizer
        2. [ ] add authorizer to private endpoints

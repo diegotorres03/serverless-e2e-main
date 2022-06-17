@@ -53,9 +53,9 @@ export class WebAppStack extends Stack {
     })
 
 
-    // [ ] TODO: create Route 53 record set [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-route53-readme.html)
+    // [o] TODO: create Route 53 record set [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-route53-readme.html)
 
-    // [ ] TODO: create DynamoDB orders table
+    // [x] TODO: create DynamoDB orders table
     const ordersTable = new DynamoDB.Table(this, 'orders', {
       partitionKey: { name: 'customer', type: DynamoDB.AttributeType.STRING },
       sortKey: { name: 'id', type: DynamoDB.AttributeType.STRING },

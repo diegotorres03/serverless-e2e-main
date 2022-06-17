@@ -27,6 +27,7 @@ const dynamo = new aws.DynamoDB.DocumentClient({region: 'us-east-2'})
 
 module.exports = api
 
+const ordersTable = 'webappStack-orders46FA7C19-EPHWZCG1QZ5'
 
 const orders = [{
     id: 1,
@@ -81,7 +82,7 @@ class Order {
 api.get('/orders', async request => {
     // [x] TODO get all orders from dynamodb
     const res = await dynamo.scan({
-        TableName: 'webappStack-orders46FA7C19-EPHWZCG1QZ5', // 'your-table-name',
+        TableName: ordersTable, // 'your-table-name',
     }).promise()
     return res.Items
 })
@@ -111,10 +112,15 @@ api.get('/orders', async request => {
  * 
  * 
  */
-api.post('/orders', request => {
+api.post('/orders', async request => {
     const order = new Order(request.body)
+    console.log(order)
     orders.push(order)
-    // [ ] TODO save order on dynamodb table
+    // [x] TODO save order on dynamodb table
+    await dynamo.put({
+        TableName: ordersTable,
+        Item: order
+    }).promise()
     return order
 })
 
@@ -143,10 +149,25 @@ api.post('/orders', request => {
  * 
  * 
  */
-api.patch('/orders/{id}', request => {
-    const orderIndex = orders.findIndex(order => order.id === request.path.id)
-    if(orderIndex === -1) return new Error('Not foud')
-    orders[orderIndex].status = request.body.status
+api.patch('/orders/{id}', async request => {
+    
+    const orderId = request.pathParams.id
+    // const orderIndex = orders.findIndex(order => order.id === orderId)
+    // if(orderIndex === -1) return new Error('Not found')
+    // orders[orderIndex].status = request.body.status
     // [ ] TODO: patch an order on dynamodb table
-    return
+    console.log('updating orderId:', orderId)
+    const res = await dynamo.update({
+        TableName: ordersTable,
+        Key: {
+            id: orderId,
+            customer: 'diegotrs',
+        },
+        ExpressionAttributeNames: {'#status': 'status'},
+        ExpressionAttributeValues: {':status': 'queued'},
+        UpdateExpression: `set #status = :status`,
+
+    }).promise()
+
+    return res
 })
