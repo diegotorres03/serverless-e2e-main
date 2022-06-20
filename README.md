@@ -18,19 +18,21 @@
        2. [x] /orders with [POST, PATCH, GET]
 3. **Database:**
    1. **DynamoDB:**
-       1. [ ] create CDK code for dynamodb table and grant access to lambda
-       2. [ ] connect api to dynamodb
+       1. [x] create CDK code for dynamodb table and grant access to lambda
+       2. [x] connect api to dynamodb
 4. **Backend processes:**
-   1. **Infrastructure as code (CDK and CloudFormation):**
+   1. **Infrastructure:**
        1. [ ] processing orders queue (sqs)
        2. [ ] user notification (sns)
-   2.  **Queued orders:** Chalice (python)
-       1. [ ] create a lambda triggered by sqs
-       2. [ ] create a lambda triggered by dynamo that nofify users using sns
+       3. [ ] dynamo stream (lambda)
+       4. [ ] SQS handler (lamda)
+   2.  **assign handlers:** Chalice (python)
+       1. [ ] connect a lambda triggered by sqs
+       2. [ ] connect a lambda triggered by dynamo that nofify users using sns
 5.  **Security:**
-   1. **Web App Access Control (Cognito):** How to secure app?
+    1. **Web App Access Control (Cognito):** How to secure app?
        1. [ ] create CDK user pool and hosted UI
        2. [ ] create a Cognito hosted UI for this application
-   2. **API Access Control (Cognito authorizer):**
+    2. **API Access Control (Cognito authorizer):**
        1. [ ] create the cognito authorizer
        2. [ ] add authorizer to private endpoints
