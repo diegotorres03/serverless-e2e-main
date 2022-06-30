@@ -17,11 +17,12 @@ class Order {
     }
 }
 
+
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)
     console.log(eventJson)
     const order = new Order(JSON.parse(event.body))
-    // [x] TODO save order on dynamodb table
+    // [ ] 3.3.2: use table on createOrder - save order on dynamodb table [docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#put-property)
     await dynamo.put({
         TableName: ordersTable,
         Item: order
@@ -29,7 +30,7 @@ async function handler(event) {
     return {
         body: JSON.stringify(order),
         statusCode: 200,
-    };
+    }
 }
 
 module.exports = { handler };

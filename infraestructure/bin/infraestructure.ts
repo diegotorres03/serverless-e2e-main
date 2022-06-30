@@ -11,14 +11,19 @@ const app = new cdk.App()
 
 
 // creating WebAppStack
-const webapp = new WebAppStack(app, 'webappStack', {
-  env: {
-    region: process.env.AWS_REGION,
-  }
+const apidoc = new WebAppStack(app, 'apidoc', {
+  env: {    region: process.env.AWS_REGION },
+  assetsPath: '../apidoc'
 })
 
+// creating WebAppStack
+const webapp = new WebAppStack(app, 'webapp', {
+  env: {    region: process.env.AWS_REGION },
+  assetsPath: '../webapp'
+})
 
-const restApi = new RestApiStack(app, 'restApiStack', {
+// creating RestApiStack
+const restApi = new RestApiStack(app, 'api', {
   env: {
     region: process.env.AWS_REGION,
   }
@@ -26,7 +31,7 @@ const restApi = new RestApiStack(app, 'restApiStack', {
 
 
 // creating BackendStack
-const backend = new BackendStack(app, 'backendStack', {
+const backend = new BackendStack(app, 'backend', {
   env: {
     region: process.env.AWS_REGION,
   }

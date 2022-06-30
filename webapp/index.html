@@ -70,7 +70,7 @@
             editable = false
             renderItems(items)
             // alert('TODO: send the order to api gateway as a POST message')
-            // [x] TODO: send the order to the api
+            // [x] 2.3.2: send the order to the api [docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#supplying_request_options)
             const url = 'https://qfzd0k4jfj.execute-api.us-east-2.amazonaws.com/dev/orders'
             const options = {
                 method: 'POST',
@@ -93,7 +93,7 @@
         })
 
         async function getOrders() {
-            // [x] TODO: get orders from api
+            // [ ] 2.3.1: get orders from api [docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
             const url = 'https://qfzd0k4jfj.execute-api.us-east-2.amazonaws.com/dev/orders'
             return await fetch(url).then(res => res.json())
         }

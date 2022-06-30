@@ -1,8 +1,5 @@
 const aws = require('aws-sdk')
 
-const dynamo = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
-// const ordersTable = 'restApiStack-orders46FA7C19-1DABCQPL86S99'
-const ordersTable = process.env.ORDERS_TABLE
 
 class Order {
     /** @param {OrderJSON} json */
@@ -18,17 +15,24 @@ class Order {
     }
 }
 
+
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)
     console.log(eventJson)
-    // [ ] 3.2.1: use table on getOrders - get all orders from dynamodb [docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#scan-property)
-    const res = await dynamo.scan({
-        TableName: ordersTable,
-    }).promise()
+
+    const orders = [{
+        id: 'test',
+        customer: 'test',
+        items: [],
+        staff: null
+    }]
+    
+    // [ ] 3.2.1 use table on getOrders - get all orders from dynamodb
+    
     return {
-        body: JSON.stringify(res.Items.map(item => new Order(item))),
+        body: JSON.stringify(orders),
         statusCode: 200,
-    }
+    };
 }
 
 module.exports = { handler }

@@ -1,0 +1,11 @@
+let functions = Resources.*[ Type == 'AWS::Lambda::Function']
+rule nodejs_function when %functions !empty {
+    %functions.Properties {
+        Runtime == 'nodejs14.x'
+    }
+}
+
+
+
+
+
