@@ -96,7 +96,7 @@ export class BackendStack extends Stack {
     // add ordersTable as source for lambda
     dynamoLambda.addEventSource(new LambdaEventSources.DynamoEventSource(ordersTable, {
       startingPosition: Lambda.StartingPosition.TRIM_HORIZON,
-      batchSize: 1,
+      batchSize: 10,
     }))
 
     // [ ] 4.3.2: set lambda 4.2.2 as handler for sqs queue messages [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html)
@@ -228,7 +228,7 @@ export class RestApiStack extends Stack {
     // [ ] can we do this importing an OpenAPI file 
 
     // [ ] 2.2.1: create api [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.RestApi.html)
-    const api = new ApiGateway.RestApi(this, 'orders-api', {
+    const api = new ApiGateway.RestApi(this, 'ordersApi', {
       description: 'handle api calls from webapp',
       deployOptions: { stageName: 'dev' },
       defaultCorsPreflightOptions: {
@@ -326,6 +326,11 @@ export class WebAppStack extends Stack {
     new CfnOutput(this, 'webappDnsUrl', {
       value: cdnDistribution.distributionDomainName,
       exportName: 'webappDnsUrl'
+    })
+
+    new CfnOutput(this, 'distributionId', {
+      value: cdnDistribution.distributionId,
+      exportName: 'distributionId'
     })
 
 

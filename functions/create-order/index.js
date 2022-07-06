@@ -1,7 +1,7 @@
 const aws = require('aws-sdk')
 
 const dynamo = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
-const ordersTable = 'restApiStack-orders46FA7C19-1DABCQPL86S99'
+const ordersTable = process.env.ORDERS_TABLE
 
 class Order {
     /** @param {OrderJSON} json */
@@ -30,6 +30,11 @@ async function handler(event) {
     return {
         body: JSON.stringify(order),
         statusCode: 200,
+        headers: {
+            "Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,PATCH"
+        },
     }
 }
 
