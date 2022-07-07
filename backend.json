@@ -1,0 +1,6 @@
+{
+  "backend-py": {
+    "ordersTableArnpy": "arn:aws:dynamodb:us-east-2:778599875342:table/backend-py-orders46FA7C19-PBBUM34QKXUI",
+    "ordersTableNamepy": "backend-py-orders46FA7C19-PBBUM34QKXUI"
+  }
+}

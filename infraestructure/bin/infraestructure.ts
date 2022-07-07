@@ -1,24 +1,21 @@
 #!/usr/bin/env node
 import 'source-map-support/register'
 import * as cdk from 'aws-cdk-lib'
-import { 
-  WebAppStack,
-  RestApiStack,
-  BackendStack,
-} from '../lib/infraestructure-stack'
-
+import {  WebAppStack } from '../lib/webapp-stack'
+import { RestApiStack } from '../lib/api-stack'
+import { BackendStack } from '../lib/backend-stack'
 const app = new cdk.App()
 
 
 // creating WebAppStack
 const apidoc = new WebAppStack(app, 'apidoc', {
-  env: {    region: process.env.AWS_REGION },
+  env: { region: process.env.AWS_REGION },
   assetsPath: '../apidoc'
 })
 
 // creating WebAppStack
 const webapp = new WebAppStack(app, 'webapp', {
-  env: {    region: process.env.AWS_REGION },
+  env: { region: process.env.AWS_REGION },
   assetsPath: '../webapp'
 })
 
