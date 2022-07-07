@@ -99,8 +99,9 @@
             return await fetch(url).then(res => res.json())
         }
         
-        getOrders().then(orders => console.log('orders', orders))
-
+        getOrders()
+            .then(orders => console.log('orders', orders))
+            .catch(err => console.error(err))
 
 
         // [aws-sdk docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/top-level-namespace.html)

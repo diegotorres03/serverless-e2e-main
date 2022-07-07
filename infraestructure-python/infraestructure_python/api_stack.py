@@ -63,7 +63,7 @@ class ApiStack(Stack):
                     'X-Api-Key',
                 ],
                 allow_origins=apigateway.Cors.ALL_ORIGINS,
-                allow_methods=['OPTIONS', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+                allow_methods=apigateway.Cors.ALL_METHODS,
                 allow_credentials=True
             )
         )
