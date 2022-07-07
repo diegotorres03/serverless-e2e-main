@@ -115,5 +115,26 @@ export class RestApiStack extends Stack {
         ordersTable.grantReadWriteData(getOrdersLambda)
         ordersTable.grantReadWriteData(updateOrderLambda)
 
+
+        const boundary1 = new IAM.ManagedPolicy(this, 'permissions-boundary-ECS', {
+            statements: [
+                new IAM.PolicyStatement({
+                    effect: IAM.Effect.DENY,
+                    actions: ['ECS:*'],
+                    resources: ['*'],
+                }),
+            ],
+        })
+
+        // if (getOrdersLambda.role) 
+        //     IAM.PermissionsBoundary.of(getOrdersLambda.role).apply(boundary1)
+
+        // if (createOrderLambda.role) 
+        //     IAM.PermissionsBoundary.of(createOrderLambda.role).apply(boundary1)
+        
+        // if (updateOrderLambda.role) 
+        //     IAM.PermissionsBoundary.of(updateOrderLambda.role).apply(boundary1)
+
+
     }
 }
