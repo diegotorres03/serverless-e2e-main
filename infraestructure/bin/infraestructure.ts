@@ -36,3 +36,6 @@ const backend = new BackendStack(app, 'backend', {
     region: process.env.AWS_REGION,
   }
 })
+
+
+// api depends on backend

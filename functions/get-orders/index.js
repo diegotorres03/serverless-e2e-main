@@ -25,6 +25,7 @@ async function handler(event) {
     const res = await dynamo.scan({
         TableName: ordersTable,
     }).promise()
+    console.log(res.Items)
     return {
         body: JSON.stringify(res.Items.map(item => new Order(item))),
         statusCode: 200,

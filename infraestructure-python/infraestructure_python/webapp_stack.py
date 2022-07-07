@@ -33,13 +33,13 @@ class WebappStack(Stack):
         # [ ] 1.2.1: create CloudFront distribution [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-cloudfront-readme.html)
 
         # to allow access to s3 from cloudfront
-        origin_access_identity = cloudfront.OriginAccessIdentity
+        origin_access_identity = cloudfront.OriginAccessIdentity(self, 'OriginAccessIdentity')
         webapp_bucket.grant_read(origin_access_identity)
 
         cdn_distribution = cloudfront.Distribution(self, 'WebappDistribution',
             default_root_object='index.html',
             default_behavior=cloudfront.BehaviorOptions(
-                origin=cloudfront_origins.S3Origin(webapp_bucket)
+                origin=cloudfront_origins.S3Origin(webapp_bucket, origin_access_identity=origin_access_identity)
             )
 
         )

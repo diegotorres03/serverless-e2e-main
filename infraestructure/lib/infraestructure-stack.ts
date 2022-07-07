@@ -102,6 +102,8 @@ export class BackendStack extends Stack {
     // [ ] 4.3.2: set lambda 4.2.2 as handler for sqs queue messages [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html)
     // allow lambda to publish messages on queue
     ordersQueue.grantSendMessages(dynamoLambda)
+    
+    // add ordersQueue as source for lambda
     sqsLambda.addEventSource(new LambdaEventSources.SqsEventSource(ordersQueue, {
       batchSize: 2,
     }))
