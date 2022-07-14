@@ -1,0 +1,64 @@
+@import url(./theme.css);
+@import url(./normalize.css);
+
+html{
+    font-family: 'Montserrat', sans-serif;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 120px;
+
+    background-color: var(--obscure);
+}
+
+.nav-menu{
+    display: grid;
+    grid-template-columns: auto auto auto;
+
+    align-items: center;
+    justify-content: space-around;
+    
+    width: 100%;
+    height: 100%;
+}
+    .link-container{
+        display: grid;
+        grid-template-columns: repeat(2,50%);
+
+        justify-content: center;
+        align-items: center;
+
+        width: 400px;
+        height: 100%;
+    }
+        .link-container button{
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 100%;
+            background-color: transparent;
+            border: none;
+
+            transition: all 0.2s ease;
+        }
+            .link-container button:hover a{
+                filter: brightness(1.1);
+            }
+            .link-container button:hover{
+                background-color: var(--main);
+            }
+            
+
+        .link-container button a{
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: var(--white);
+            margin: 24px;
+        }
+        
