@@ -1,8 +1,6 @@
-const aws = require('aws-sdk')
-
-const dynamo = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
 const ordersTable = process.env.ORDERS_TABLE
 
+const aws = require('aws-sdk')
 class Order {
     /** @param {OrderJSON} json */
     constructor(json) {
@@ -17,12 +15,14 @@ class Order {
     }
 }
 
-
 async function handler(event) {
+    const dynamo = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
     const eventJson = JSON.stringify(event, null, 2)
+
     console.log(eventJson)
     const order = new Order(JSON.parse(event.body))
     // [ ] 3.3.2: use table on createOrder - save order on dynamodb table [docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#put-property)
+
     await dynamo.put({
         TableName: ordersTable,
         Item: order
