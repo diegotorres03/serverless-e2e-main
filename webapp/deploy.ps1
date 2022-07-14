@@ -3,10 +3,10 @@ $bucketName="s3://" + $WebappConfig.webapp.webappBucketName
 $distributionId=$WebappConfig.webapp.distributionId
 
 #  [ ] 1.1.2: add command to update web assets in S3 [docs](https://docs.aws.amazon.com/cli/latest/reference/s3/index.html)
-
-Write-Host 'Uploadin assets to' + $bucketName
+Write-Host 'Uploading assets to' + $bucketName
 aws s3 cp .  $bucketName --recursive
 
 
 #  [ ] 1.2.2: add command to invalidate cloudfront distribution [docs](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html)
+Write-Host 'Deleting cache for distribution id =' + $distributionId
 aws cloudfront create-invalidation --distribution-id $distributionId --paths '/*'
