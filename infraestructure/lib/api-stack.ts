@@ -5,6 +5,7 @@ import {
     aws_lambda as Lambda,
     aws_iam as IAM,
     aws_apigateway as ApiGateway,
+    aws_ec2 as EC2,
     CfnOutput,
     Fn,
 } from 'aws-cdk-lib'
