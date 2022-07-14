@@ -47,6 +47,7 @@
 
         const baseUrl = 'https://y36j1ckw6e.execute-api.us-east-2.amazonaws.com/dev/' // get from CDK output for api stack
         const items = []
+        const itemMap = new Map()
         let editable = true
 
         const renderItems = items => {
@@ -122,6 +123,8 @@
                 await getOrders()
             } catch (err) {
                 console.error(err)
+            } finally {
+                editable = true
             }
         })
 
