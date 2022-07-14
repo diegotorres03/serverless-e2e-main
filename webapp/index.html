@@ -53,7 +53,7 @@
         const renderItems = items => {
             const list = document.querySelector('.shopping-cart')
             const listItems = items.map(item =>
-                `<li data-type="${item.type}"  >${item.name} ${editable ? `<button>X</button>` : ''} </li>`)
+                `<li data-type="${item.type}"  >${item.name} x ${item.qty} ${editable ? `<button>X</button>` : ''} </li>`)
             list.innerHTML = listItems.join('\n')
         }
 
@@ -82,7 +82,11 @@
             console.log(event.target)
             console.log(event.target.dataset)
             const data = event.target.dataset
-            items.push({ name: data.name, type: data.type, qty: 1 })
+            const item = { name: data.name, type: data.type, qty: 1 }
+            const index = items.findIndex(cartItem => cartItem.name === item.name)
+            console.log(index)
+            if (index !== -1) items[index].qty += 1
+            else items.push(item)
             renderItems(items)
         }
 
