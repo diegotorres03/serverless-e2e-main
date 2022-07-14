@@ -116,7 +116,9 @@
             try {
                 const res = await fetch(url, options)
                 const responseData = await res.json()
-                renderItems([])
+                console.log(responseData)
+                items.length = 0
+                renderItems(items)
                 await getOrders()
             } catch (err) {
                 console.error(err)
