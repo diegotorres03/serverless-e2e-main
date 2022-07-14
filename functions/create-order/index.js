@@ -6,8 +6,9 @@ class Order {
     constructor(json) {
         this.id = json.id
         this.customer = json.customer
-        this.items =Array.isArray(json.items) ? [ ...json.items ] : []
+        this.items = Array.isArray(json.items) ? [...json.items] : []
         this.staff = json.staff
+        this._expireOn = json._expireOn || (new Date().getTime() / 1000) + 2 * 60
     }
 
     addItem(name, type, qty) {
@@ -21,6 +22,7 @@ async function handler(event) {
 
     console.log(eventJson)
     const order = new Order(JSON.parse(event.body))
+    console.log(order)
     // [ ] 3.3.2: use table on createOrder - save order on dynamodb table [docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#put-property)
 
     await dynamo.put({
@@ -31,7 +33,8 @@ async function handler(event) {
         body: JSON.stringify(order),
         statusCode: 200,
         headers: {
-            "Access-Control-Allow-Headers" : "Content-Type",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Headers": "Content-Type",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,PATCH"
         },
