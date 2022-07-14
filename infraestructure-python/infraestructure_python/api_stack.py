@@ -82,3 +82,5 @@ class ApiStack(Stack):
         # [ ] 2.2.3: create /orders/{customer}/{id} [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_apigateway/IResource.html)
         single_order_endpoint = orders_endpoint.add_resource('{customer}').add_resource('{id}')
         single_order_endpoint.add_method('PATCH', apigateway.LambdaIntegration(update_orders_lambda, proxy=True))
+
+

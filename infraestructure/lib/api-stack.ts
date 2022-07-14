@@ -19,27 +19,6 @@ export class RestApiStack extends Stack {
         // [ ] 3.1.2: connect api to dynamodb [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.Table.html#static-fromwbrtablewbrarnscope-id-tablearn)
         const ordersTableArn = Fn.importValue('ordersTableArn')
         const ordersTable = DynamoDB.Table.fromTableArn(this, 'ordersTable', ordersTableArn)
-        console.log('ordersTableArn', ordersTableArn.toString())
-        console.log('ordersTable.tableStreamArn?.toString()', ordersTable.tableStreamArn?.toString())
-
-
-        // this.ordersTable = new DynamoDB.Table(this, 'orders', {
-        //   partitionKey: { name: 'customer', type: DynamoDB.AttributeType.STRING },
-        //   sortKey: { name: 'id', type: DynamoDB.AttributeType.STRING },
-        //   billingMode: DynamoDB.BillingMode.PAY_PER_REQUEST,
-        //   stream: DynamoDB.StreamViewType.NEW_AND_OLD_IMAGES,
-        // })
-
-        // new CfnOutput(this, 'ordersTableName', {
-        //   value: this.ordersTable.tableName,
-        //   exportName: 'ordersTableName'
-        // })
-
-        // new CfnOutput(this, 'ordersTableArn', {
-        //   value: this.ordersTable.tableArn,
-        //   exportName: 'ordersTableArn'
-        // })
-
 
 
         // [ ] 2.1.1: create lambdas for getOrders [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html)
@@ -116,15 +95,15 @@ export class RestApiStack extends Stack {
         ordersTable.grantReadWriteData(updateOrderLambda)
 
 
-        const boundary1 = new IAM.ManagedPolicy(this, 'permissions-boundary-ECS', {
-            statements: [
-                new IAM.PolicyStatement({
-                    effect: IAM.Effect.DENY,
-                    actions: ['ECS:*'],
-                    resources: ['*'],
-                }),
-            ],
-        })
+        // const boundary1 = new IAM.ManagedPolicy(this, 'permissions-boundary-ECS', {
+        //     statements: [
+        //         new IAM.PolicyStatement({
+        //             effect: IAM.Effect.DENY,
+        //             actions: ['ECS:*'],
+        //             resources: ['*'],
+        //         }),
+        //     ],
+        // })
 
         // if (getOrdersLambda.role) 
         //     IAM.PermissionsBoundary.of(getOrdersLambda.role).apply(boundary1)
@@ -134,7 +113,5 @@ export class RestApiStack extends Stack {
         
         // if (updateOrderLambda.role) 
         //     IAM.PermissionsBoundary.of(updateOrderLambda.role).apply(boundary1)
-
-
     }
 }

@@ -6,13 +6,14 @@
   "dependencies": {
     "apidoc": "^0.51.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cypress": "^10.3.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "apidoc": "apidoc -i functions/ -o apidoc/",
     "next": "git",
     "prev": ""
-
   },
   "repository": {
     "type": "git",

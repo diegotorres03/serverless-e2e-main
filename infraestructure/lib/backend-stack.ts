@@ -23,10 +23,6 @@ export class BackendStack extends Stack {
         const timeToLiveAttribute = '_expireOn'
 
         // [ ] 3.1.1: create DynamoDB orders table [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-dynamodb-readme.html)
-        // const ordersTableArn = Fn.importValue('ordersTableArn')
-        // const ordersTable = DynamoDB.Table.fromTableArn(this, 'ordersTable', ordersTableArn)
-        // console.log('ordersTableArn', ordersTableArn.toString())
-        // console.log('ordersTable.tableStreamArn?.toString()', ordersTable.tableStreamArn?.toString())
         const ordersTable = new DynamoDB.Table(this, 'orders', {
             partitionKey: { name: 'customer', type: DynamoDB.AttributeType.STRING },
             sortKey: { name: 'id', type: DynamoDB.AttributeType.STRING },

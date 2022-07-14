@@ -12,3 +12,28 @@
   - [AWS Lambda function handler in PowerShell](https://github.com/awsdocs/aws-lambda-developer-guide/blob/main/doc_source/powershell-handler.md)
 - [Building Lambda functions with C#](https://github.com/awsdocs/aws-lambda-developer-guide/blob/main/doc_source/lambda-csharp.md)
 - [Building Lambda functions with Python](https://github.com/awsdocs/aws-lambda-developer-guide/blob/main/doc_source/lambda-python.md)
+
+
+
+
+**TODO**
+- [ ] use [AWS Toolkit for Visual Studio](https://aws.amazon.com/visualstudio/) (extension)
+
+
+**For .Net**
+- Option 1: 1h meeting 
+  - getting started .Net Serverless AWS
+  - Demo
+- Option 2: 2.5h meeting'
+  - getting started .Net Serverless AWS
+  - demo (Visual Studio)
+    - Lambda
+    - Api Gateway
+    - Fargate
+  - hands on workshop
+
+
+https://dev.to/cjjenkinson/how-to-create-an-aurora-serverless-rds-instance-on-aws-with-cdk-5bb0
+https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.CreateInstance.html#Aurora.CreateInstance.Creating
+
+https://docs.aws.amazon.com/cdk/v2/guide/troubleshooting.html
