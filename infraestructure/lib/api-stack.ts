@@ -60,6 +60,9 @@ export class RestApiStack extends Stack {
                     'X-Amz-Date',
                     'Authorization',
                     'X-Api-Key',
+                    'Access-Control-Allow-Headers',
+                    "Access-Control-Allow-Origin",
+                    "Access-Control-Allow-Methods",
                 ],
                 allowOrigins: ApiGateway.Cors.ALL_ORIGINS,
                 allowMethods: ApiGateway.Cors.ALL_METHODS,
@@ -73,11 +76,19 @@ export class RestApiStack extends Stack {
             exportName: 'apiUrl'
         })
 
+        // const corsPreflight = {
+        //     allowHeaders: ['Content-Type', 'X-Amz-Date', 'Authorization', 'X-Api-Key'],
+        //     allowMethods: [ 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+        //     allowCredentials: true,
+        //     allowOrigins: ['http://localhost:3000'],
+        // }
+
         // [ ] 2.2.2: create /orders resource [POST, GET] [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.IResource.html#addwbrmethodhttpmethod-target-options)
         const ordersEndpoint = api.root.addResource('orders')
         ordersEndpoint.addMethod('GET', new ApiGateway.LambdaIntegration(getOrdersLambda, { proxy: true }))
         ordersEndpoint.addMethod('POST', new ApiGateway.LambdaIntegration(createOrderLambda, { proxy: true }))
 
+        // ordersEndpoint.addCorsPreflight(corsPreflight)
 
         // [ ] 2.2.3: create /orders/{customer}/{id} [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.IResource.html#addwbrresourcepathpart-options)
         const singleOrderEndpoint = ordersEndpoint.addResource('{customer}').addResource('{id}')
@@ -110,7 +121,7 @@ export class RestApiStack extends Stack {
 
         // if (createOrderLambda.role) 
         //     IAM.PermissionsBoundary.of(createOrderLambda.role).apply(boundary1)
-        
+
         // if (updateOrderLambda.role) 
         //     IAM.PermissionsBoundary.of(updateOrderLambda.role).apply(boundary1)
     }
