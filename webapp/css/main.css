@@ -50,12 +50,13 @@ header{
             }
             .link-container button:hover{
                 background-color: var(--main);
+                cursor: pointer;
             }
             
 
         .link-container button a{
             text-decoration: none;
-            font-size: 2rem;
+            font-size: 1.50rem;
             font-weight: 400;
             letter-spacing: 4px;
             color: var(--white);
