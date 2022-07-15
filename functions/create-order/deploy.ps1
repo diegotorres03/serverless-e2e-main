@@ -9,5 +9,5 @@ if ($exists) {
     Remove-Item .\create-order.zip 
 }
 
-Compress-Archive -Path .\ -DestinationPath .\create-order
+Compress-Archive -Path .\*.js -DestinationPath .\create-order
 aws lambda update-function-code --function-name $config.api.createOrderLambda --zip-file fileb://create-order.zip
