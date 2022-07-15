@@ -13,48 +13,89 @@
 <body>
 
     <header>
-        <nav class="nav-menu">
-            
+        <nav class="nav-menu">  
             <div class="link-container">
-                <button><a href="#">HINT</a></button>
-                <button><a href="#">HELP</a></button>
+                <button class="test-hint-btn"><a href="#">HINT</a></button>
+                <button class="test-help-btn"><a href="#">HELP</a></button>
             </div>
                 
             <img src="./assets/SVG/AWSOME.svg" alt="">
 
             <div class="link-container">
-                <button><a href="#">CART</a></button>
-                <button><a href="#">USER</a></button>
+                <button class="test-cart-btn"><a href="#">CART</a></button>
+                <button class="test-user-btn"><a href="#">USER</a></button>
 
-                    </div>
+            </div>
         
         </nav>
-
     </header>
-    <hr>
-    <section>
-        <ol class="shopping-cart">
-        </ol>
-    </section>
 
-    <hr>
+    <article class="product-section" >
 
-    <section>
-        <h1>Products</h1>
-        <ul>
-            <li><button id="add-coffe-btn" class="add-product-btn" data-name="coffe" data-type="beberage">Coffe</button>
-            </li>
-            <li><button id="add-capuccino-btn" class="add-product-btn" data-name="capuccino"
+        <section class="catalog-product">
+            <h1>Products</h1>
+            
+            <ul>
+                <li class="card-product">
+                    
+                    <img src="./assets/cup-coffee.png" alt="">
+
+                    <div class="title">
+                        <h4>Coffee</h4>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    </div>
+                        
+                    
+                        <div class="add-more-btn-container">
+
+                            <div class="add-more-btn">
+
+                                <button class="plus-btn">+</button>
+                                <p>2</p>
+                                <button class="minus-btn">-</button>
+                                
+                            </div>
+
+                        </div>
+                        
+                        <div class="add-product-btn-container">
+
+    
+                        <button id="add-coffe-btn" class="add-product-btn test-coffe-btn" data-name="coffe" data-type="beberage">Add
+                        </div>
+
+                        </button>
+                    
+
+                </li>
+
+                
+
+            <li><button id="add-capuccino-btn" class="add-product-btn test-capu-btn" data-name="capuccino"
                     data-type="beberage">Capuccino</button></li>
-            <li><button id="add-chocolate-btn" class="add-product-btn" data-name="hot chocolate"
+
+            <li><button id="add-chocolate-btn test-choco-btn" class="add-product-btn" data-name="hot chocolate"
                     data-type="beberage">Hot chocolate</button></li>
-            <li><button id="add-xxx-btn" class="add-product-btn" data-name="croisant" data-type="meal">Croissant</button>
+
+            <li><button id="add-xxx-btn" class="add-product-btn test-croi-btn" data-name="croisant" data-type="meal">Croissant</button>
             </li>
-            <li><button id="add-avocado-btn" class="add-product-btn" data-name="avocado toast" data-type="meal">Avocado
+
+            <li><button id="add-avocado-btn" class="add-product-btn test-toast-btn" data-name="avocado toast" data-type="meal">Avocado
                     toast</button></li>
-        </ul>
-        <button id="place-order-btn">Place order</button>
-    </section>
+
+            </ul>
+
+            <button id="place-order-btn">Place order</button>
+
+        </section>
+      
+        
+        <section >
+            <ol class="shopping-cart">
+            </ol>
+        </section>
+        
+    </article>
     <hr>
 
 
