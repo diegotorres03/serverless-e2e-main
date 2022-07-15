@@ -12,8 +12,8 @@ $distributionId=$WebappConfig.webapp.distributionId
 # [ ] copy webapp.json to webapp folder
 
 # this is the same as cp ../webapp.json .
-Copy-Item -Path ..\webapp.json -Destination .
 Copy-Item -Path ..\api.json -Destination .
+# Copy-Item -Path ..\webapp.json -Destination . # this might not be needed here
 
 
 #  [ ] 1.1.2: add command to update web assets in S3 [docs](https://docs.aws.amazon.com/cli/latest/reference/s3/index.html)

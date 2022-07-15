@@ -29,7 +29,10 @@ export class RestApiStack extends Stack {
             code: Lambda.Code.fromAsset('../functions/get-orders'),// [ ] check the deployment, is this needed here
             environment: { ORDERS_TABLE: ordersTable.tableName }
         })
-
+        new CfnOutput(this, 'getOrdersLambda', {
+            value: getOrdersLambda.functionName,
+            exportName: 'getOrdersLambda'
+        })
 
         // [ ] 2.1.2: create lambdas for createOrder [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html)
         const createOrderLambda = new Lambda.Function(this, 'createOrder', {
@@ -38,7 +41,10 @@ export class RestApiStack extends Stack {
             code: Lambda.Code.fromAsset('../functions/create-order'),
             environment: { ORDERS_TABLE: ordersTable.tableName }
         })
-
+        new CfnOutput(this, 'createOrderLambda', {
+            value: createOrderLambda.functionName,
+            exportName: 'createOrderLambda'
+        })
 
         // [ ] 2.1.3: create lambdas for updateOrder [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html)
         const updateOrderLambda = new Lambda.Function(this, 'updateOrder', {
@@ -47,7 +53,10 @@ export class RestApiStack extends Stack {
             code: Lambda.Code.fromAsset('../functions/update-order'),
             environment: { ORDERS_TABLE: ordersTable.tableName }
         })
-
+        new CfnOutput(this, 'updateOrderLambda', {
+            value: updateOrderLambda.functionName,
+            exportName: 'updateOrderLambda'
+        })
 
         // [ ] can we do this importing an OpenAPI file 
 

@@ -3,9 +3,9 @@
 # npm run apidoc
 
 Write-Host 'Running infra'
-# Set-Location infraestructure
-# . .\deploy.ps1
-# Set-Location ..
+Set-Location infraestructure
+. .\deploy.ps1
+Set-Location ..
 
 # run test here
 
