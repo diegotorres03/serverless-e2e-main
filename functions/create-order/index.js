@@ -20,6 +20,9 @@ class Order {
 
 
 async function handler(event) {
+
+    console.log('(>*.*)>')
+
     const eventJson = JSON.stringify(event, null, 2)
     console.log(eventJson)
     const order = new Order(JSON.parse(event.body))
