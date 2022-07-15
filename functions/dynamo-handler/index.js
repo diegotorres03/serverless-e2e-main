@@ -3,13 +3,28 @@ const converter = aws.DynamoDB.Converter
 
 const ordersQueue = process.env.QUEUE
 
+class OrderItem {
+    constructor(params) {
+        this.name = params.name || ''
+        this.type = params.type || ''
+        this.qty = Number(params.qty) || 0
+    }
+}
 class Order {
     /** @param {OrderJSON} json */
     constructor(json) {
         this.id = json.id
         this.customer = json.customer
-        this.items = Array.isArray(json.items) ? [...json.items] : []
         this.staff = json.staff
+        this._createdAt = Date.now()
+        this._procecedAt = null
+        this._filledAt = null
+        this._expireOn = json._expireOn || (new Date().getTime() / 1000) + 2 * 60
+        
+        /** @param {OrderItem[]} items */
+        this.items = Array.isArray(json.items) ?
+            json.items.map(item => new OrderItem(item)) : []
+            
     }
 
     addItem(name, type, qty) {
@@ -62,77 +77,70 @@ async function handler(event) {
  *
  * @param {Order} order
  */
-async function saveToTimestream(order) {
-    const params = {
-        DatabaseName: process.env.TS_DB, /* required */
-        Records: [ /* required */
+function getRecord(order) {
+    const record = {
+        Dimensions: [
             {
-                Dimensions: [
-                    {
-                        Name: 'customer',
-                        Value: order.customer,
-                        DimensionValueType: 'VARCHAR',
-                    },
-                    {
-                        Name: 'orderId',
-                        Value: order.id,
-                        DimensionValueType: 'VARCHAR',
-                    },
-                    {
-                        Name: 'staff',
-                        Value: order.staff,
-                        DimensionValueType: 'VARCHAR',
-                    },
-                    /* more items */
-                ],
-                MeasureName: 'STRING_VALUE',
-                MeasureValue: 'STRING_VALUE',
-                MeasureValueType: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI,
-                MeasureValues: [
-                    {
-                        Name: 'STRING_VALUE', /* required */
-                        Type: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
-                        Value: 'STRING_VALUE' /* required */
-                    },
-                    /* more items */
-                ],
-                Time: 'STRING_VALUE',
-                TimeUnit: MILLISECONDS | SECONDS | MICROSECONDS | NANOSECONDS,
-                Version: 'NUMBER_VALUE'
+                Name: 'customer',
+                Value: order.customer,
+                DimensionValueType: 'VARCHAR',
+            },
+            {
+                Name: 'orderId',
+                Value: order.id,
+                DimensionValueType: 'VARCHAR',
+            },
+            {
+                Name: 'staff',
+                Value: order.staff,
+                DimensionValueType: 'VARCHAR',
             },
             /* more items */
         ],
+        MeasureName: 'orderStats',
+        // MeasureValue: 'STRING_VALUE',
+        // MeasureValueType: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI,
+        MeasureValues: [
+            {
+                Name: 'processTime', /* required */
+                Type: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
+                Value: order._procecedAt - order._createdAt /* required */
+            },
+            {
+                Name: 'completionTie', /* required */
+                Type: 'DOUBLE', // | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
+                Value: order._filledAt - order._createdAt /* required */
+            },
+            {
+                Name: 'itemCount', /* required */
+                Type: 'DOUBLE', // | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
+                Value: order.items.reduce(prev, current => prev.qty + current.qty) /* required */
+            },
+        ],
+        Time: order._createdAt,
+        TimeUnit: 'MILLISECONDS', // | SECONDS | MICROSECONDS | NANOSECONDS,
+        // Version: 'NUMBER_VALUE'
+    }
+    return record
+}
+
+/**
+ *
+ *
+ * @param {Order[]} orders
+ */
+async function saveToTimestream(orders) {
+    const records = orders.map(getRecord)
+    const params = {
         TableName: process.env.TS_TABLE, /* required */
-        CommonAttributes: {
-            Dimensions: [
-                {
-                    Name: 'STRING_VALUE', /* required */
-                    Value: 'STRING_VALUE', /* required */
-                    DimensionValueType: VARCHAR
-                },
-                /* more items */
-            ],
-            MeasureName: 'STRING_VALUE',
-            MeasureValue: 'STRING_VALUE',
-            MeasureValueType: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI,
-            MeasureValues: [
-                {
-                    Name: 'STRING_VALUE', /* required */
-                    Type: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
-                    Value: 'STRING_VALUE' /* required */
-                },
-                /* more items */
-            ],
-            Time: 'STRING_VALUE',
-            TimeUnit: MILLISECONDS | SECONDS | MICROSECONDS | NANOSECONDS,
-            Version: 'NUMBER_VALUE'
-        }
+        DatabaseName: process.env.TS_DB, /* required */
+        Records: [ records ],
     }
     console.log(params)
-    timestreamwrite.writeRecords(params, function (err, data) {
-        if (err) console.log(err, err.stack) // an error occurred
-        else console.log(data)           // successful response
-    })
+    // timestreamwrite.writeRecords(params, function (err, data) {
+    //     if (err) console.log(err, err.stack) // an error occurred
+    //     else console.log(data)           // successful response
+    // })
 }
 
 module.exports = { handler }
