@@ -25,20 +25,20 @@ Write-Output "running cfn-guard on api stack"
 cfn-guard validate -d .\cdk.out\backendStack.template.json -r .\rules\api.rules
 
 # deploy api stack and save api.json on root folder
-Write-Output "deploy api stack and save api.json on root folder"
-cdk deploy api -O ../api.json
+# Write-Output "deploy api stack and save api.json on root folder"
+# cdk deploy api -O ../api.json
 
 
 ## WEBAPP
 
 # running cdk synth on webapp stack
-Write-Output "running cdk synth on webapp stack"
-cdk synth webapp
+# Write-Output "running cdk synth on webapp stack"
+# cdk synth webapp
 
 # running cfn-guard on webapp stack
-Write-Output "running cfn-guard on webapp stack"
-cfn-guard validate -d .\cdk.out\webappStack.template.json -r .\rules\webapp.rules
+# Write-Output "running cfn-guard on webapp stack"
+# cfn-guard validate -d .\cdk.out\webappStack.template.json -r .\rules\webapp.rules
 
 # deploy webapp stack and save webapp.json on root folder
-Write-Output "deploy webapp stack and save webapp.json on root folder"
-cdk deploy webapp -O ../webapp.json
+# Write-Output "deploy webapp stack and save webapp.json on root folder"
+# cdk deploy webapp -O ../webapp.json
