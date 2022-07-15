@@ -1,6 +1,8 @@
 <!-- https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/lambda-creating-project-in-visual-studio.html -->
 
 
+[Typescrit for C# devs](https://www.youtube.com/watch?v=MRLUylSe6Dc)
+
 
 [ ] Aurora serverless
 [ ] [lambda function in POSH](https://github.com/awsdocs/aws-lambda-developer-guide/blob/main/sample-apps/blank-powershell/function/Handler.ps1)

@@ -1,4 +1,5 @@
 const aws = require('aws-sdk')
+
 class Order {
     /** @param {OrderJSON} json */
     constructor(json) {
@@ -6,6 +7,10 @@ class Order {
         this.customer = json.customer
         this.items = Array.isArray(json.items) ? [...json.items] : []
         this.staff = json.staff
+        this._createdAt = Date.now()
+        this._procecedAt = null
+        this._filledAt = null
+        this._expireOn = json._expireOn || (new Date().getTime() / 1000) + 2 * 60
     }
 
     addItem(name, type, qty) {
