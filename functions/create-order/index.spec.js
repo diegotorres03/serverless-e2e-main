@@ -1,6 +1,8 @@
 // Declaring environments here so the imported lambda funtion
 // would get access to its definitions
-process.env.ORDERS_TABLE = 'test-orders'
+
+process.env.ORDERS_TABLE = 'fail'
+// process.env.ORDERS_TABLE = require('../../backend.json').backend.ordersTableName
 
 const expect = require('chai').expect
 const awsMock = require('aws-sdk-mock')

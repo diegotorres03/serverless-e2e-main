@@ -8,7 +8,7 @@ class Order {
     constructor(json) {
         this.id = json.id
         this.customer = json.customer
-        this.items =Array.isArray(json.items) ? [ ...json.items ] : []
+        this.items = Array.isArray(json.items) ? [...json.items] : []
         this.staff = json.staff
     }
 
@@ -21,13 +21,24 @@ const queueUrl = process.env.QUEUE
 
 const queue = new aws.SQS()
 
+const timestreamWrite = new aws.TimestreamWrite()
+
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)
     console.log(eventJson)
     const responses = event.Records.map(record => {
-
         const newItem = converter.unmarshall(record.dynamodb.NewImage)
         console.log('Record', JSON.stringify(newItem, null, 2))
+
+        if (record.eventName === 'REMOVE') {
+            // return send to timestream
+        }
+
+        if (record.eventName === 'MODIFY') {
+            // return send to timestream
+        }
+
+
         // [ ] get messages from dynamodb stream add them to queue
         return queue.sendMessage({
             QueueUrl: queueUrl,
@@ -40,9 +51,88 @@ async function handler(event) {
     console.log(JSON.stringify(response, null, 2))
 
     return {
-        body: JSON.stringify({json: response}),
+        body: JSON.stringify({ json: response }),
         statusCode: 200,
-    };
+    }
+}
+
+
+/**
+ *
+ *
+ * @param {Order} order
+ */
+async function saveToTimestream(order) {
+    const params = {
+        DatabaseName: process.env.TS_DB, /* required */
+        Records: [ /* required */
+            {
+                Dimensions: [
+                    {
+                        Name: 'customer',
+                        Value: order.customer,
+                        DimensionValueType: 'VARCHAR',
+                    },
+                    {
+                        Name: 'orderId',
+                        Value: order.id,
+                        DimensionValueType: 'VARCHAR',
+                    },
+                    {
+                        Name: 'staff',
+                        Value: order.staff,
+                        DimensionValueType: 'VARCHAR',
+                    },
+                    /* more items */
+                ],
+                MeasureName: 'STRING_VALUE',
+                MeasureValue: 'STRING_VALUE',
+                MeasureValueType: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI,
+                MeasureValues: [
+                    {
+                        Name: 'STRING_VALUE', /* required */
+                        Type: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
+                        Value: 'STRING_VALUE' /* required */
+                    },
+                    /* more items */
+                ],
+                Time: 'STRING_VALUE',
+                TimeUnit: MILLISECONDS | SECONDS | MICROSECONDS | NANOSECONDS,
+                Version: 'NUMBER_VALUE'
+            },
+            /* more items */
+        ],
+        TableName: process.env.TS_TABLE, /* required */
+        CommonAttributes: {
+            Dimensions: [
+                {
+                    Name: 'STRING_VALUE', /* required */
+                    Value: 'STRING_VALUE', /* required */
+                    DimensionValueType: VARCHAR
+                },
+                /* more items */
+            ],
+            MeasureName: 'STRING_VALUE',
+            MeasureValue: 'STRING_VALUE',
+            MeasureValueType: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI,
+            MeasureValues: [
+                {
+                    Name: 'STRING_VALUE', /* required */
+                    Type: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
+                    Value: 'STRING_VALUE' /* required */
+                },
+                /* more items */
+            ],
+            Time: 'STRING_VALUE',
+            TimeUnit: MILLISECONDS | SECONDS | MICROSECONDS | NANOSECONDS,
+            Version: 'NUMBER_VALUE'
+        }
+    }
+    console.log(params)
+    timestreamwrite.writeRecords(params, function (err, data) {
+        if (err) console.log(err, err.stack) // an error occurred
+        else console.log(data)           // successful response
+    })
 }
 
 module.exports = { handler }

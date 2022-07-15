@@ -62,6 +62,10 @@ export class BackendStack extends Stack {
                 TS_TABLE: '',
             },
         })
+        new CfnOutput(this, 'dynamoLambda', {
+            value: dynamoLambda.functionName,
+            exportName: 'dynamoLambda'
+        })
 
         // [ ] 4.2.2: create a lambda to handle sqs messages [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html)
         const sqsLambda = new Lambda.Function(this, 'sqsHandler', {
@@ -70,7 +74,10 @@ export class BackendStack extends Stack {
             handler: 'index.handler',
             environment: { QUEUE: ordersQueue.queueUrl },
         })
-
+        new CfnOutput(this, 'sqsLambda', {
+            value: sqsLambda.functionName,
+            exportName: 'sqsLambda'
+        })
 
 
 

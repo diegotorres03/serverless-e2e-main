@@ -59,6 +59,10 @@ class BackendStack(Stack):
         dynamo_lambda.add_environment('QUEUE', orders_queue.queue_url)
         dynamo_lambda.add_environment('TS_DB', '')
         dynamo_lambda.add_environment('TS_TABLE', '')
+        CfnOutput(self, 'dynamoLambda-py', 
+            export_name='dynamoLambda-py', 
+            value= dynamo_lambda.function_name
+        )
 
         # [ ] 4.2.2: create a lambda to handle sqs messages [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_lambda/Function.html)
         sqs_lambda = lambda_.Function(self, 'sqsHandler',
@@ -67,6 +71,10 @@ class BackendStack(Stack):
             handler='index.handler'
         )
         sqs_lambda.add_environment('QUEUE', orders_queue.queue_url)
+        CfnOutput(self, 'sqsLambda-py', 
+            export_name='sqsLambda-py', 
+            value= sqs_lambda.function_name
+        )
 
 
         # [ ] 4.3.1: set lambda 4.2.1 as handler for dynamodb table updates [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_lambda/Function.html)
