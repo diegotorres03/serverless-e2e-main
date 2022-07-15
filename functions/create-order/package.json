@@ -10,5 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.1157.0"
+  },
+  "devDependencies": {
+    "aws-sdk-mock": "^5.7.0",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0"
   }
 }
