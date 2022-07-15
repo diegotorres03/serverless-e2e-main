@@ -73,7 +73,7 @@ header{
 .product-section{
     display: grid;
     grid-template-columns: 65% 30%;
-    justify-content: space-between;
+    justify-content: space-between; 
 }
     .product-section h1{
         margin: 14px 0;
@@ -277,6 +277,18 @@ header{
             border: none;
             padding: 2px 6px;
         }
+
+/* HISTORIAL-LIST */
+
+.order-history{
+    background-color: var(--main);
+    color: var(--white);
+    padding: 0px 18px ;
+    margin: 14px 0 14px 14px;
+    border-radius: 16px;
+}
+
+
 
 
 
