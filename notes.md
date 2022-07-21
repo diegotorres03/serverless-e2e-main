@@ -39,3 +39,7 @@ https://dev.to/cjjenkinson/how-to-create-an-aurora-serverless-rds-instance-on-aw
 https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.CreateInstance.html#Aurora.CreateInstance.Creating
 
 https://docs.aws.amazon.com/cdk/v2/guide/troubleshooting.html
+
+
+
+[ ] generate Swagger file from apidoc

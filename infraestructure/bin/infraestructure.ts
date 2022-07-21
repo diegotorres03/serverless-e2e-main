@@ -9,6 +9,12 @@ const app = new cdk.App()
 
 
 // creating WebAppStack
+const testWebapp = new WebAppStack(app, 'testWebapp', {
+  env: { region: process.env.AWS_REGION },
+  assetsPath: '../test-webapp'
+})
+
+// creating WebAppStack
 const apidoc = new WebAppStack(app, 'apidoc', {
   env: { region: process.env.AWS_REGION },
   assetsPath: '../apidoc'

@@ -23,6 +23,31 @@ class Order {
     }
 }
 
+/**
+ * 
+ * @api {GET} /orders getOrders
+ * @apiName cafe
+ * @apiGroup group
+ * @apiVersion  1.1.1
+ * 
+ * 
+ * @apiParam  {String} paramName description
+ * 
+ * @apiSuccess (200) {type} name description
+ * 
+ * @apiParamExample  {type} Request-Example:
+ * {
+ *     property : value
+ * }
+ * 
+ * 
+ * @apiSuccessExample {type} Success-Response:
+ * {
+ *     property : value
+ * }
+ * 
+ * 
+ */
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)
     console.log(eventJson)

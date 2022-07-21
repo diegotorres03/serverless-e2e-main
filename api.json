@@ -1,9 +1,9 @@
 {
   "api": {
-    "apiUrl": "https://y36j1ckw6e.execute-api.us-east-2.amazonaws.com/dev/",
-    "createOrderLambda": "api-createOrder36EBF614-WSVHceOwb7HI",
-    "ordersApiEndpoint2C254E8D": "https://y36j1ckw6e.execute-api.us-east-2.amazonaws.com/dev/",
-    "updateOrderLambda": "api-updateOrder4A3763D2-X5FwXBpNxnQD",
-    "getOrdersLambda": "api-getOrders222216C7-aDLUJja0seUq"
+    "apiUrl": "https://rn6rn9w7oj.execute-api.us-east-2.amazonaws.com/dev/",
+    "createOrderLambda": "api-createOrder36EBF614-2lpJ5M8uNs6J",
+    "ordersApiEndpoint2C254E8D": "https://rn6rn9w7oj.execute-api.us-east-2.amazonaws.com/dev/",
+    "updateOrderLambda": "api-updateOrder4A3763D2-0gbXyCgkzj8P",
+    "getOrdersLambda": "api-getOrders222216C7-NM8t4Le3dUyD"
   }
 }

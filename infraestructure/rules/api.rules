@@ -7,5 +7,3 @@ rule nodejs_function when %functions !empty {
 
 
 
-
-

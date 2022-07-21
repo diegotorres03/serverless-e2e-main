@@ -20,11 +20,11 @@ class Order {
         this._procecedAt = null
         this._filledAt = null
         this._expireOn = json._expireOn || (new Date().getTime() / 1000) + 2 * 60
-        
+
         /** @param {OrderItem[]} items */
         this.items = Array.isArray(json.items) ?
             json.items.map(item => new OrderItem(item)) : []
-            
+
     }
 
     addItem(name, type, qty) {
@@ -36,17 +36,21 @@ const queueUrl = process.env.QUEUE
 
 const queue = new aws.SQS()
 
-const timestreamWrite = new aws.TimestreamWrite()
+const timestreamWrite = new aws.TimestreamWrite({region: 'us-east-2'})
+const timestreamDBName = process.env.TS_DB || 'serverless-e2e-db'
+const timestreamTableName = process.env.TS_TABLE || 'ordersts'
 
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)
     console.log(eventJson)
     const responses = event.Records.map(record => {
         const newItem = converter.unmarshall(record.dynamodb.NewImage)
+        const oldItem = converter.unmarshall(record.dynamodb.OldImage)
         console.log('Record', JSON.stringify(newItem, null, 2))
 
         if (record.eventName === 'REMOVE') {
             // return send to timestream
+            return saveToTimestream(oldItem)
         }
 
         if (record.eventName === 'MODIFY') {
@@ -92,7 +96,7 @@ function getRecord(order) {
             },
             {
                 Name: 'staff',
-                Value: order.staff,
+                Value: order.staff || 'no staff',
                 DimensionValueType: 'VARCHAR',
             },
             /* more items */
@@ -103,18 +107,18 @@ function getRecord(order) {
         MeasureValues: [
             {
                 Name: 'processTime', /* required */
-                Type: DOUBLE | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
-                Value: order._procecedAt - order._createdAt /* required */
+                Type: 'timestreamWrite', // 'DOUBLE', // | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
+                Value: String(order._procecedAt - order._createdAt) /* required */
             },
             {
                 Name: 'completionTie', /* required */
                 Type: 'DOUBLE', // | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
-                Value: order._filledAt - order._createdAt /* required */
+                Value: String(order._filledAt - order._createdAt) /* required */
             },
             {
                 Name: 'itemCount', /* required */
                 Type: 'DOUBLE', // | BIGINT | VARCHAR | BOOLEAN | TIMESTAMP | MULTI, /* required */
-                Value: order.items.reduce(prev, current => prev.qty + current.qty) /* required */
+                Value: '' + order.items.reduce((prev, current) => prev.qty + current.qty) /* required */
             },
         ],
         Time: order._createdAt,
@@ -129,18 +133,21 @@ function getRecord(order) {
  *
  * @param {Order[]} orders
  */
-async function saveToTimestream(orders) {
-    const records = orders.map(getRecord)
+async function saveToTimestream(order) {
+    const records = getRecord(order)
     const params = {
-        TableName: process.env.TS_TABLE, /* required */
-        DatabaseName: process.env.TS_DB, /* required */
-        Records: [ records ],
+        TableName: timestreamDBName, /* required */
+        DatabaseName: timestreamTableName, /* required */
+        Records: [records],
     }
-    console.log(params)
-    // timestreamwrite.writeRecords(params, function (err, data) {
-    //     if (err) console.log(err, err.stack) // an error occurred
-    //     else console.log(data)           // successful response
-    // })
+    console.log(JSON.stringify(params, null, 2))
+    const res = await timestreamWrite.writeRecords(params).promise()
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
+    console.log(res)
+    return res
 }
 
 module.exports = { handler }

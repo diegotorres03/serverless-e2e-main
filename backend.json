@@ -1,8 +1,8 @@
 {
   "backend": {
-    "sqsLambda": "backend-sqsHandler9E1A7184-K1es6yadumQB",
-    "dynamoLambda": "backend-dynamoHandler15FDB600-a19HPxIyL6K2",
-    "ordersTableArn": "arn:aws:dynamodb:us-east-2:778599875342:table/backend-orders46FA7C19-NV4XDQRHCB58",
-    "ordersTableName": "backend-orders46FA7C19-NV4XDQRHCB58"
+    "sqsLambda": "backend-sqsHandler9E1A7184-EzSyWC7hQ0MU",
+    "dynamoLambda": "backend-dynamoHandler15FDB600-xr89C0JlReD6",
+    "ordersTableArn": "arn:aws:dynamodb:us-east-2:890483622378:table/backend-orders46FA7C19-YPTA6ALJE19H",
+    "ordersTableName": "backend-orders46FA7C19-YPTA6ALJE19H"
   }
 }

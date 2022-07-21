@@ -22,6 +22,7 @@ export interface WebappProps extends StackProps {
 export class WebAppStack extends Stack {
     constructor(scope: Construct, id: string, props?: WebappProps) {
         super(scope, id, props)
+        
         // [ ] 1.1.1: create S3 Bucket as web hosting to store webapp [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-s3-readme.html)
         const webappBucket = new S3.Bucket(this, 'webapp-artifact', {
             accessControl: S3.BucketAccessControl.PRIVATE,
@@ -43,7 +44,7 @@ export class WebAppStack extends Stack {
 
         new CfnOutput(this, 'webappBucketName', {
             value: webappBucket.bucketName,
-            exportName: 'webappBucketName'
+            // exportName: 'webappBucketName'
         })
 
 
@@ -63,12 +64,12 @@ export class WebAppStack extends Stack {
 
         new CfnOutput(this, 'webappDnsUrl', {
             value: cdnDistribution.distributionDomainName,
-            exportName: 'webappDnsUrl'
+            // exportName: 'webappDnsUrl'
         })
 
         new CfnOutput(this, 'distributionId', {
             value: cdnDistribution.distributionId,
-            exportName: 'distributionId'
+            // exportName: 'distributionId'
         })
 
 

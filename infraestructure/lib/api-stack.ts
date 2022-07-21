@@ -26,12 +26,14 @@ export class RestApiStack extends Stack {
         const getOrdersLambda = new Lambda.Function(this, 'getOrders', {
             runtime: Lambda.Runtime.NODEJS_14_X,
             handler: 'index.handler',
+
+            // TODO fix this
             code: Lambda.Code.fromAsset('../functions/get-orders'),// [ ] check the deployment, is this needed here
             environment: { ORDERS_TABLE: ordersTable.tableName }
         })
         new CfnOutput(this, 'getOrdersLambda', {
             value: getOrdersLambda.functionName,
-            exportName: 'getOrdersLambda'
+            // exportName: 'getOrdersLambda'
         })
 
         // [ ] 2.1.2: create lambdas for createOrder [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html)
@@ -43,7 +45,7 @@ export class RestApiStack extends Stack {
         })
         new CfnOutput(this, 'createOrderLambda', {
             value: createOrderLambda.functionName,
-            exportName: 'createOrderLambda'
+            // exportName: 'createOrderLambda'
         })
 
         // [ ] 2.1.3: create lambdas for updateOrder [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html)
@@ -55,10 +57,28 @@ export class RestApiStack extends Stack {
         })
         new CfnOutput(this, 'updateOrderLambda', {
             value: updateOrderLambda.functionName,
-            exportName: 'updateOrderLambda'
+            // exportName: 'updateOrderLambda'
         })
 
         // [ ] can we do this importing an OpenAPI file 
+
+        // ApiGateway.AuthorizationType.CUSTOM
+
+
+        // [ ] 5.1.1 create authenticate lambda function
+        const authenticateLambda = new Lambda.Function(this, 'authenticate', {
+            runtime: Lambda.Runtime.NODEJS_14_X,
+            code: Lambda.Code.fromAsset('../functions/authenticate'),
+            handler: 'index.handler',
+        })
+
+        // [ ] 5.2.1 create the custom authorizer
+        const authorizerLambda = new Lambda.Function(this, 'authorize', {
+            runtime: Lambda.Runtime.NODEJS_14_X,
+            code: Lambda.Code.fromAsset('../functions/authorize'),
+            handler: 'index.handler',
+        })
+
 
         // [ ] 2.2.1: create api [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.RestApi.html)
         const api = new ApiGateway.RestApi(this, 'ordersApi', {
@@ -77,7 +97,7 @@ export class RestApiStack extends Stack {
                 allowOrigins: ApiGateway.Cors.ALL_ORIGINS,
                 allowMethods: ApiGateway.Cors.ALL_METHODS,
                 allowCredentials: true,
-            }
+            },
         })
 
         // export api value so it can be called by other stacks
@@ -86,23 +106,31 @@ export class RestApiStack extends Stack {
             exportName: 'apiUrl'
         })
 
-        // const corsPreflight = {
-        //     allowHeaders: ['Content-Type', 'X-Amz-Date', 'Authorization', 'X-Api-Key'],
-        //     allowMethods: [ 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-        //     allowCredentials: true,
-        //     allowOrigins: ['http://localhost:3000'],
-        // }
+        // [ ] 5.1.2 create an endpoint fot authentication
+        const authEndpoint = api.root
+            .addResource('authenticate')
+            .addMethod('POST', new ApiGateway.LambdaIntegration(authenticateLambda, { proxy: true }))
+
+        // [ ] 5.2.2 add authorizer to private endpoints
+        const authorizer = new ApiGateway.TokenAuthorizer(this, 'ordersAuthorizer', {
+            handler: authorizerLambda
+        })
+
+        // [ ] 5.2.2
 
         // [ ] 2.2.2: create /orders resource [POST, GET] [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.IResource.html#addwbrmethodhttpmethod-target-options)
         const ordersEndpoint = api.root.addResource('orders')
-        ordersEndpoint.addMethod('GET', new ApiGateway.LambdaIntegration(getOrdersLambda, { proxy: true }))
-        ordersEndpoint.addMethod('POST', new ApiGateway.LambdaIntegration(createOrderLambda, { proxy: true }))
+        ordersEndpoint.addMethod('GET', new ApiGateway
+            .LambdaIntegration(getOrdersLambda, { proxy: true }), { authorizer })
+        ordersEndpoint.addMethod('POST', new ApiGateway
+            .LambdaIntegration(createOrderLambda, { proxy: true }), { authorizer })
 
         // ordersEndpoint.addCorsPreflight(corsPreflight)
 
         // [ ] 2.2.3: create /orders/{customer}/{id} [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.IResource.html#addwbrresourcepathpart-options)
         const singleOrderEndpoint = ordersEndpoint.addResource('{customer}').addResource('{id}')
-        singleOrderEndpoint.addMethod('PATCH', new ApiGateway.LambdaIntegration(updateOrderLambda, { proxy: true }))
+        singleOrderEndpoint.addMethod('PATCH', new ApiGateway
+            .LambdaIntegration(updateOrderLambda, { proxy: true }), { authorizer })
 
 
 

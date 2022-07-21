@@ -1,4 +1,6 @@
 
+cdk bootstrap
+
 ## BACKEND
 
 # running cdk synth on backend stack
