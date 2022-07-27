@@ -31,10 +31,7 @@ export class RestApiStack extends Stack {
             code: Lambda.Code.fromAsset('../functions/get-orders'),// [ ] check the deployment, is this needed here
             environment: { ORDERS_TABLE: ordersTable.tableName }
         })
-        new CfnOutput(this, 'getOrdersLambda', {
-            value: getOrdersLambda.functionName,
-            // exportName: 'getOrdersLambda'
-        })
+        new CfnOutput(this, 'getOrdersLambda', { value: getOrdersLambda.functionName })
 
         // [ ] 2.1.2: create lambdas for createOrder [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html)
         const createOrderLambda = new Lambda.Function(this, 'createOrder', {
@@ -43,10 +40,7 @@ export class RestApiStack extends Stack {
             code: Lambda.Code.fromAsset('../functions/create-order'),
             environment: { ORDERS_TABLE: ordersTable.tableName }
         })
-        new CfnOutput(this, 'createOrderLambda', {
-            value: createOrderLambda.functionName,
-            // exportName: 'createOrderLambda'
-        })
+        new CfnOutput(this, 'createOrderLambda', { value: createOrderLambda.functionName })
 
         // [ ] 2.1.3: create lambdas for updateOrder [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html)
         const updateOrderLambda = new Lambda.Function(this, 'updateOrder', {
@@ -55,10 +49,7 @@ export class RestApiStack extends Stack {
             code: Lambda.Code.fromAsset('../functions/update-order'),
             environment: { ORDERS_TABLE: ordersTable.tableName }
         })
-        new CfnOutput(this, 'updateOrderLambda', {
-            value: updateOrderLambda.functionName,
-            // exportName: 'updateOrderLambda'
-        })
+        new CfnOutput(this, 'updateOrderLambda', { value: updateOrderLambda.functionName })
 
         // [ ] can we do this importing an OpenAPI file 
 
@@ -101,10 +92,7 @@ export class RestApiStack extends Stack {
         })
 
         // export api value so it can be called by other stacks
-        new CfnOutput(this, 'apiUrl', {
-            value: api.url,
-            exportName: 'apiUrl'
-        })
+        new CfnOutput(this, 'apiUrl', { value: api.url })
 
         // [ ] 5.1.2 create an endpoint fot authentication
         const authEndpoint = api.root
@@ -129,7 +117,8 @@ export class RestApiStack extends Stack {
 
         // [ ] 2.2.3: create /orders/{customer}/{id} [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.IResource.html#addwbrresourcepathpart-options)
         const singleOrderEndpoint = ordersEndpoint.addResource('{customer}').addResource('{id}')
-        singleOrderEndpoint.addMethod('PATCH', new ApiGateway
+        singleOrderEndpoint
+            .addMethod('PATCH', new ApiGateway
             .LambdaIntegration(updateOrderLambda, { proxy: true }), { authorizer })
 
 

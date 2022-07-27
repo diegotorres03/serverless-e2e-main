@@ -4,18 +4,27 @@ const dynamo = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
 // const ordersTable = 'restApiStack-orders46FA7C19-1DABCQPL86S99'
 const ordersTable = process.env.ORDERS_TABLE
 
-
+class OrderItem {
+    constructor(params) {
+        this.name = params.name || ''
+        this.type = params.type || ''
+        this.qty = Number(params.qty) || 0
+    }
+}
 class Order {
     /** @param {OrderJSON} json */
     constructor(json) {
         this.id = json.id
         this.customer = json.customer
-        this.items = Array.isArray(json.items) ? [...json.items] : []
         this.staff = json.staff
-        this._createdAt = Date.now()
-        this._procecedAt = null
-        this._filledAt = null
-        this._expireOn = json._expireOn || (new Date().getTime() / 1000) + 2 * 60
+        this._createdAt = json._createdAt || Date.now()
+        
+        this._filledAt = json._createdAt || null
+        this._expireOn = json._expireOn || (new Date().getTime() / 1000) + 10 * 60
+
+        /** @param {OrderItem[]} items */
+        this.items = Array.isArray(json.items) ?
+            json.items.map(item => new OrderItem(item)) : []
     }
 
     addItem(name, type, qty) {

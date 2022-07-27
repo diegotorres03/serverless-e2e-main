@@ -28,7 +28,7 @@ class WebappStack(Stack):
             removal_policy=RemovalPolicy.DESTROY
         )
 
-        CfnOutput(self, 'webappBucketName', export_name='webappBucketName', value= webapp_bucket.bucket_name)
+        CfnOutput(self, 'webappBucketName', value= webapp_bucket.bucket_name)
 
         # [ ] 1.2.1: create CloudFront distribution [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-cloudfront-readme.html)
 
@@ -44,12 +44,5 @@ class WebappStack(Stack):
 
         )
         
-        CfnOutput(self, 'webappDnsUrl', 
-            export_name='webappDnsUrl', 
-            value= cdn_distribution.distribution_domain_name
-        )
-
-        CfnOutput(self, 'distributionId', 
-            export_name='distributionId', 
-            value= cdn_distribution.distribution_id
-        )
+        CfnOutput(self, 'webappDnsUrl', value= cdn_distribution.distribution_domain_name)
+        CfnOutput(self, 'distributionId', value= cdn_distribution.distribution_id)

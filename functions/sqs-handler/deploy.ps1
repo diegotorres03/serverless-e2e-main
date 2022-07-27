@@ -1,17 +1,18 @@
 
+npm i
 
 # test function
 npm run test
 
 # read a json file
-$config=Get-Content -Raw -Path '..\api.json' | ConvertFrom-Json -Depth 4
+$config=Get-Content -Raw -Path '..\backend.json' | ConvertFrom-Json -Depth 4
 
-Write-Output "updating function" $config.api.createOrderLambda
+Write-Output "updating function" $config.backend.sqsLambda
 
 $exists=Test-Path .\create-order.zip 
 if ($exists) { 
     Remove-Item .\create-order.zip 
 }
 
-Compress-Archive -Path .\*.js -DestinationPath .\create-order
-aws lambda update-function-code --function-name $config.api.createOrderLambda --zip-file fileb://create-order.zip
+Compress-Archive -Path .\*.js -DestinationPath .\sqs-handler
+aws lambda update-function-code --function-name $config.backend.sqsLambda --zip-file fileb://sqs-handler.zip

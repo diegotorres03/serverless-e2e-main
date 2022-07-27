@@ -43,3 +43,6 @@ https://docs.aws.amazon.com/cdk/v2/guide/troubleshooting.html
 
 
 [ ] generate Swagger file from apidoc
+[ ] slides on the services we are going to use
+
+

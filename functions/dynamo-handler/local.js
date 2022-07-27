@@ -3,71 +3,64 @@ const { handler } = require('./index')
 const event = {
     "Records": [
         {
-            "eventID": "3315d2207c2fe84a61189336e4f52eed",
+            "eventID": "c0a2a99f4f075f6400296b99f7457214",
             "eventName": "REMOVE",
             "eventVersion": "1.1",
             "eventSource": "aws:dynamodb",
             "awsRegion": "us-east-2",
             "dynamodb": {
-                "ApproximateCreationDateTime": 1657900134,
+                "ApproximateCreationDateTime": 1658791171,
                 "Keys": {
                     "id": {
-                        "S": "1657899467502"
+                        "S": "1658791123384"
                     },
                     "customer": {
                         "S": "diegotrs"
                     }
                 },
                 "OldImage": {
+
+                    "_createdAt": {
+                        "N": "1658791123923"
+                    },
                     "id": {
-                        "S": "1657899467502"
+                        "S": "1658791123384"
+                    },
+                    "_filledAt": {
+                        "N": "1658791127156"
                     },
                     "items": {
                         "L": [
                             {
                                 "M": {
                                     "qty": {
-                                        "N": "1"
+                                        "N": "4"
                                     },
                                     "name": {
-                                        "S": "coffe"
+                                        "S": "croisant"
                                     },
                                     "type": {
-                                        "S": "beberage"
-                                    }
-                                }
-                            },
-                            {
-                                "M": {
-                                    "qty": {
-                                        "N": "1"
-                                    },
-                                    "name": {
-                                        "S": "capuccino"
-                                    },
-                                    "type": {
-                                        "S": "beberage"
+                                        "S": "meal"
                                     }
                                 }
                             }
                         ]
                     },
                     "_expireOn": {
-                        "N": "1657899589.456"
+                        "N": "1658791723.923"
                     },
                     "customer": {
                         "S": "diegotrs"
+                    },
+                    "status": {
+                        "S": "filled"
                     }
                 },
-                "SequenceNumber": "37953800000000003109900519",
-                "SizeBytes": 157,
+                "SequenceNumber": "94600000000004818821055",
+                "SizeBytes": 178,
                 "StreamViewType": "NEW_AND_OLD_IMAGES"
             },
-            "userIdentity": {
-                "principalId": "dynamodb.amazonaws.com",
-                "type": "Service"
-            },
-            "eventSourceARN": "arn:aws:dynamodb:us-east-2:778599875342:table/backend-orders46FA7C19-NV4XDQRHCB58/stream/2022-07-07T16:03:53.945"
+            "eventSourceARN": "arn:aws:dynamodb:us-east-2:525462356282:table/backend-orders46FA7C19-J0NPZQ1LVYDU/stream/2022-07-25T19:46:03.350"
         }
     ]
 }

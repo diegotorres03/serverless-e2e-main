@@ -22,8 +22,8 @@
        2. [ ] 2.2.2: create /orders resource [POST, GET] [ts](./infraestructure/lib/api-stack.ts) [py](./infraestructure-python/infraestructure_python/api_stack.py) [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.IResource.html#addwbrmethodhttpmethod-target-options)
        3. [ ] 2.2.3: create /orders/{customer}/{id} [ts](./infraestructure/lib/api-stack.ts) [py](./infraestructure-python/infraestructure_python/api_stack.py) [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.IResource.html#addwbrresourcepathpart-options)
     3. **webapp**
-       1. [ ] 2.3.1: get orders from api [js](./webapp/index.html) [docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
-       2. [ ] 2.3.2: send the order to the api [js](./webapp/index.html) [docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#supplying_request_options)
+       1. [ ] 2.3.1: get orders from api [js](./webapp/src/index.js) [docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+       2. [ ] 2.3.2: send the order to the api [js](./webapp/src/index.js) [docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#supplying_request_options)
 3. **Database:**
     1. **DynamoDB:**
        1. [ ] 3.1.1: create DynamoDB orders table [ts](./infraestructure/lib/backend-stack.ts) [py](./infraestructure-python/infraestructure_python/backend_stack.py) [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-dynamodb-readme.html)
@@ -49,6 +49,12 @@
     2. **API Access Control (Custon authorizer):**
        1. [ ] create the custom authorizer
        2. [ ] add authorizer to private endpoints
+    3. **webapp authorization**
+        1. [ ] use `Authorization` header on http getOrders
+        2. [ ] use `Authorization` header on http createOrder
+    4. **Permission Boundaries**
+        1. [ ] define Policy Boundary
+        2. [ ] attach boundary to all constructs
 
 
 --- 

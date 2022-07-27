@@ -1,12 +1,12 @@
 
 
 # test function
-npm run test
+# npm run test
 
 # read a json file
 $config=Get-Content -Raw -Path '..\api.json' | ConvertFrom-Json -Depth 4
 
-Write-Output "updating function" $config.api.createOrderLambda
+Write-Output "updating function" $config.api.updateOrderLambda
 
 $exists=Test-Path .\create-order.zip 
 if ($exists) { 
@@ -14,4 +14,4 @@ if ($exists) {
 }
 
 Compress-Archive -Path .\*.js -DestinationPath .\create-order
-aws lambda update-function-code --function-name $config.api.createOrderLambda --zip-file fileb://create-order.zip
+aws lambda update-function-code --function-name $config.api.updateOrderLambda --zip-file fileb://create-order.zip

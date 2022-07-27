@@ -8,13 +8,12 @@ import {
     aws_timestream as TimeStream,
     aws_sqs as SQS,
     aws_sns as SNS,
+    aws_quicksight as Quicksight,
     CfnOutput,
     Duration,
     RemovalPolicy,
 } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
-
-import * as apiConfig from '../../api/claudia.json'
 
 export class BackendStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
@@ -64,7 +63,7 @@ export class BackendStack extends Stack {
         })
         new CfnOutput(this, 'dynamoLambda', {
             value: dynamoLambda.functionName,
-            exportName: 'dynamoLambda'
+            // exportName: 'dynamoLambda'
         })
 
         // [ ] 4.2.2: create a lambda to handle sqs messages [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html)
@@ -76,7 +75,7 @@ export class BackendStack extends Stack {
         })
         new CfnOutput(this, 'sqsLambda', {
             value: sqsLambda.functionName,
-            exportName: 'sqsLambda'
+            // exportName: 'sqsLambda'
         })
 
 
@@ -105,16 +104,18 @@ export class BackendStack extends Stack {
 
         /////////////////
 
+
         const TimeStreamDBName = 'serverless-e2e-db'
         const usersLogsTableName = 'ordersts'
 
-        const TimestreamDB = new TimeStream.CfnDatabase(this, TimeStreamDBName, {
+
+        const TimestreamDB = new TimeStream.CfnDatabase(this, 'serverless-e2e-db', {
             databaseName: TimeStreamDBName,
         })
 
-        const ordersTSTable = new TimeStream.CfnTable(this, usersLogsTableName, {
+        const ordersTSTable = new TimeStream.CfnTable(this, 'ordersts', {
             tableName: usersLogsTableName,
-            databaseName: TimeStreamDBName || TimestreamDB.databaseName || '',
+            databaseName: TimestreamDB.databaseName || '',
 
             retentionProperties: {
                 MemoryStoreRetentionPeriodInHours: '36',
@@ -122,6 +123,18 @@ export class BackendStack extends Stack {
             },
             tags: [{ key: 'project', value: 'hackaton-score-app' }],
         })
+
+        dynamoLambda.addEnvironment('TS_DB', TimeStreamDBName)
+        dynamoLambda.addEnvironment('TS_TABLE', usersLogsTableName)
+
+        new CfnOutput(this, 'timestreamDB', {
+            value: TimestreamDB.databaseName?.toString() || '',
+        })
+
+        new CfnOutput(this, 'timestreamTable', {
+            value: ordersTSTable.tableName?.toString() || '',
+        })
+
 
         ordersTSTable.addDependsOn(TimestreamDB)
 

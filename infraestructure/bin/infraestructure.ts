@@ -41,16 +41,30 @@ const backend = new BackendStack(app, 'backend', {
   }
 })
 
+// {
+//   "Version": "2012-10-17",
+//   "Statement": [
+//       {
+//           "Effect": "Allow",
+//           "Action": [
+//               "s3:*",
+//               "cloudwatch:*",
+//               "ec2:*"
+//           ],
+//           "Resource": "*"
+//       }
+//   ]
+// }
 
-// const boundary = (stackParam: IConstruct) => new cdk.aws_iam.ManagedPolicy(stackParam, 'permissions-boundary-ECS', {
-//   statements: [
-//     new cdk.aws_iam.PolicyStatement({
-//       effect: cdk.aws_iam.Effect.DENY,
-//       actions: ['ECS:*'],
-//       resources: ['*'],
-//     }),
-//   ],
-// })
+const boundary = (stackParam: IConstruct) => new cdk.aws_iam.ManagedPolicy(stackParam, 'permissions-boundary-ECS', {
+  statements: [
+    new cdk.aws_iam.PolicyStatement({
+      effect: cdk.aws_iam.Effect.DENY,
+      actions: ['iam:GetUser'],
+      resources: ['*'],
+    }),
+  ],
+})
 
 // cdk.aws_iam.PermissionsBoundary
 //   .of(backend)
