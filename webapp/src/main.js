@@ -38,6 +38,8 @@ function run() {
         ).then(res => res.json())
         return orders
     }
+    
+    refreshOrders()
 
     async function refreshOrders() {
         const orders = await getOrders()
@@ -47,7 +49,6 @@ function run() {
         })
     }
 
-    refreshOrders()
 
     cart.addEventListener('onplaceorder', async event => {
         console.log(event)

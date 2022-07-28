@@ -13,6 +13,13 @@ const html = function (templates, ...values) {
 }
 
 
+function getEditability(editable) {
+    if(editable === undefined) return true
+    if(editable === null) return true
+    if(editable === 'true') return true
+    return false
+}
+
 class CaffeCartItem extends HTMLElement {
 
     static get observedAttributes() { return ['name', 'type', 'qty'] }
@@ -20,7 +27,7 @@ class CaffeCartItem extends HTMLElement {
     constructor() {
         super()
         this.name = this.getAttribute('name')
-        this.editable = this.getAttribute('editable') || true
+        this.editable = getEditability(this.getAttribute('editable'))
         this.type = this.getAttribute('type')
         this.qty = this.getAttribute('qty')
         this.menuItems = []
@@ -39,13 +46,17 @@ class CaffeCartItem extends HTMLElement {
             <li data-type="${this.type}">
                 <b class="cart-item-name">
                     ${this.name}
-                </b> x <span class="cart-item-qty">
-                    ${this.qty}
-                </span> ${this.editable ? html`<button class="cart-remove-item-btn" data-name="${this.name}">X</button>`.outerHTML :
+                </b> x <span class="cart-item-qty">${this.qty}</span>
+                ${this.editable ? html`<button class="cart-remove-item-btn" data-name="${this.name}">X</button>`.outerHTML :
                 ''}
             </li>
         `
         const children = [...this.children]
+
+        if (children.length === 0) this.appendChild(inner)
+        else this.replaceChild(inner, children.shift())
+
+        if (!this.editable) return
 
         inner.querySelector('.cart-remove-item-btn').addEventListener('click', event => {
             // handle click, send a remove event
@@ -53,8 +64,6 @@ class CaffeCartItem extends HTMLElement {
             this.dispatchEvent(new CustomEvent('remove-item', { detail: { name: event.target.dataset.name } }))
         })
 
-        if (children.length === 0) this.appendChild(inner)
-        else this.replaceChild(inner, children.shift())
     }
 
 

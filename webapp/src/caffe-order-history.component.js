@@ -38,7 +38,7 @@ class CaffeOrderHistory extends HTMLElement {
         const orderItem = html`
             <caffe-order-history-item customer="${order.customer}" id="${order.id}">
                 ${order.items.map(item => 
-                    html`<caffe-cart-item name="Coffee" type="beberage" qty="2" editable="false"></caffe-cart-item>`
+                    html`<caffe-cart-item name="${item.name}" type="${item.type}" qty="${item.qty}" editable="false"></caffe-cart-item>`
                     .outerHTML)}
             </caffe-order-history-item>
         `

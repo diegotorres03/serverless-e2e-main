@@ -61,6 +61,7 @@ class CaffeMenu extends HTMLElement {
         const children = [...this.children]
 
         this.innerHTML = ''
+        // document.createElement('div').outerHTML
         this.appendChild(inner)
 
         const menuList = inner.querySelector('.caffe-menu-list')

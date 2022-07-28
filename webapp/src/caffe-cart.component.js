@@ -128,7 +128,7 @@ class CaffeCart extends HTMLElement {
     // called every time an attribute is added, removed or updated
     attributeChangedCallback(name, oldValue, newValue) {
         console.log('disconnectedCallback', name, oldValue, newValue)
-        this._render()
+        // this._render()
     }
 
     adoptedCallback() {
