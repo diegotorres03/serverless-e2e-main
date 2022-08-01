@@ -1,21 +1,36 @@
-/**
- *
- *
- * @param {string[]} templates
- * @param {string[]} values
- * @return {HTMLElement} 
- */
-const html = function (templates, ...values) {
-    const template = document.createElement('template')
-    let str = ''
-    templates.forEach((template, index) => {
-        str += template
-        str = values[index] ? str + values[index] : str
-    })
+// /**
+//  *
+//  *
+//  * @param {string[]} templates
+//  * @param {string[]} values
+//  * @return {HTMLElement} 
+//  */
+// const html = function (templates, ...values) {
+//     const template = document.createElement('template')
+//     let str = ''
+//     templates.forEach((template, index) => {
+//         str += template
+//         str = values[index] ? str + values[index] : str
+//     })
 
-    template.innerHTML = str.trim()
-    return template.content.firstChild
-}
+//     template.innerHTML = str.trim()
+//     return template.content.firstChild
+// }
+
+
+// function importScript(url) {
+//     const newScript = document.createElement("script")
+//     newScript.src = url //"http://www.example.com/my-script.js"
+//     target.appendChild(newScript)
+
+//     // var newScript = document.createElement("script");
+//     // var inlineScript = document.createTextNode("alert('Hello World!');");
+//     // newScript.appendChild(inlineScript); 
+//     // target.appendChild(newScript);
+
+// }
+
+
 
 const onPlaceOrder = 'onplaceorder'
 
@@ -115,19 +130,16 @@ class CaffeCart extends HTMLElement {
 
     // called every time an element is inserted into the DOM
     connectedCallback() {
-        console.log('connectedCallback')
         this._render()
     }
 
     // called every time an element is removed from the DOM
     disconnectedCallback() {
-        console.log('disconnectedCallback')
 
     }
 
     // called every time an attribute is added, removed or updated
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log('disconnectedCallback', name, oldValue, newValue)
         // this._render()
     }
 

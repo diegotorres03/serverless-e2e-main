@@ -1,14 +1,14 @@
-const html = function (templates, ...values) {
-    const template = document.createElement('template')
-    let str = ''
-    templates.forEach((template, index) => {
-        str += template
-        str = values[index] ? str + values[index] : str
-    })
-    template.innerHTML = str.trim()
-    return template.content.firstChild
-    // return template.content.cloneNode(true)
-}
+// const html = function (templates, ...values) {
+//     const template = document.createElement('template')
+//     let str = ''
+//     templates.forEach((template, index) => {
+//         str += template
+//         str = values[index] ? str + values[index] : str
+//     })
+//     template.innerHTML = str.trim()
+//     return template.content
+//     // return template.content.cloneNode(true)
+// }
 
 const onAdded = 'added'
 
@@ -33,15 +33,8 @@ class CaffeMenu extends HTMLElement {
         super()
         this.storeId = this.getAttribute('store-id')
 
-        console.log('this._children', this._children)
-        console.log('this.children', [...this.children])
-
         Array.from(this.children).forEach(child => {
-            console.log(child)
             child.addEventListener(onAdded, event => {
-                console.group('on menu')
-                console.log(onAdded, event)
-                console.groupEnd()
                 this.dispatchEvent(new CustomEvent('item-added', { detail: event.detail }))
             })
         })
@@ -71,22 +64,18 @@ class CaffeMenu extends HTMLElement {
 
     // called every time an element is inserted into the DOM
     connectedCallback() {
-        console.log('connectedCallback')
         this._render()
     }
 
     // called every time an element is removed from the DOM
     disconnectedCallback() {
-        console.log('disconnectedCallback')
     }
 
     // called every time an attribute is added, removed or updated
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log('disconnectedCallback', name, oldValue, newValue)
     }
 
     adoptedCallback() {
-        console.log('adoptedCallback')
     }
 }
 

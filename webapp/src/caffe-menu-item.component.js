@@ -1,14 +1,14 @@
-const html = function (templates, ...values) {
-    const template = document.createElement('template')
-    let str = ''
-    templates.forEach((template, index) => {
-        str += template
-        str = values[index] ? str + values[index] : str
-    })
-    template.innerHTML = str.trim()
-    return template.content.firstChild
-    // return template.content.cloneNode(true)
-}
+// const html = function (templates, ...values) {
+//     const template = document.createElement('template')
+//     let str = ''
+//     templates.forEach((template, index) => {
+//         str += template
+//         str = values[index] ? str + values[index] : str
+//     })
+//     template.innerHTML = str.trim()
+//     return template.content.firstChild
+//     // return template.content.cloneNode(true)
+// }
 
 class CaffeMenuItem extends HTMLElement {
 
@@ -25,12 +25,12 @@ class CaffeMenuItem extends HTMLElement {
         const inner = html`
             <li class="card-product">
                 <img src="${this.img}" alt="">
-
+            
                 <div class="title">
                     <h4>${this.name}</h4>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                 </div>
-
+            
                 <div class="add-more-btn-container">
                     <div class="add-more-btn">
                         <button class="minus-btn">-</button>
@@ -53,7 +53,6 @@ class CaffeMenuItem extends HTMLElement {
 
     // called every time an element is inserted into the DOM
     connectedCallback() {
-        console.log('connectedCallback')
         this._render()
         this.querySelector('.add-product-btn').addEventListener('click', event => {
             console.log(event)
@@ -69,18 +68,15 @@ class CaffeMenuItem extends HTMLElement {
 
     // called every time an element is removed from the DOM
     disconnectedCallback() {
-        console.log('disconnectedCallback')
 
     }
 
     // called every time an attribute is added, removed or updated
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log('attributeChangedCallback', name, oldValue, newValue)
         this._render()
     }
 
     adoptedCallback() {
-        console.log('adoptedCallback')
     }
 
 

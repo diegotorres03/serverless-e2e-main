@@ -1,17 +1,17 @@
 
-
-# test function
-npm run test
-
 # read a json file
-$config=Get-Content -Raw -Path '..\api.json' | ConvertFrom-Json -Depth 4
+$Config = Get-Content -Raw -Path '..\api.json' | ConvertFrom-Json -Depth 4
 
-Write-Output "updating function" $config.api.createOrderLambda
+$functionName = $Config.api.createOrderLambda
 
-$exists=Test-Path .\create-order.zip 
+Write-Output "updating function" $functionName
+
+$exists=Test-Path .\function.zip
 if ($exists) { 
-    Remove-Item .\create-order.zip 
+    Remove-Item .\function.zip
 }
 
-Compress-Archive -Path .\*.js -DestinationPath .\create-order
-aws lambda update-function-code --function-name $config.api.createOrderLambda --zip-file fileb://create-order.zip
+Compress-Archive -DestinationPath function.zip -Path ./* -Force
+
+# [o] https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-code.html
+aws lambda update-function-code --function-name $functionName --zip-file fileb://function.zip --region us-east-2

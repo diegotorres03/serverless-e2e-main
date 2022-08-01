@@ -8,9 +8,9 @@ $config=Get-Content -Raw -Path '..\api.json' | ConvertFrom-Json -Depth 4
 
 Write-Output "updating function" $config.api.createOrderLambda
 
-$exists=Test-Path .\create-order.zip 
+$exists=Test-Path .\function.zip
 if ($exists) { 
-    Remove-Item .\create-order.zip 
+    Remove-Item .\function.zip
 }
 
 Compress-Archive -Path .\*.js -DestinationPath .\create-order

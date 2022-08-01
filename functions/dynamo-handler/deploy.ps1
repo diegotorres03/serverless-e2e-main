@@ -1,17 +1,14 @@
-
-
-# test function
-# npm run test
-
 # read a json file
-$config=Get-Content -Raw -Path '..\backend.json' | ConvertFrom-Json -Depth 4
+$Config = Get-Content -Raw -Path '..\backend.json' | ConvertFrom-Json -Depth 4
 
-Write-Output "updating function" $config.backend.dynamoLambda
+$functionName = $Config.backend.dynamoLambda
 
-$exists=Test-Path .\dynamo-handler.zip 
+$exists=Test-Path .\function.zip
 if ($exists) { 
-    Remove-Item .\dynamo-handler.zip 
+    Remove-Item .\function.zip
 }
 
-Compress-Archive -Path .\*.js -DestinationPath .\dynamo-handler
-aws lambda update-function-code --function-name $config.backend.dynamoLambda --zip-file fileb://dynamo-handler.zip
+Compress-Archive -DestinationPath function.zip -Path ./* -Force
+
+# [o] https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-code.html
+aws lambda update-function-code --function-name $functionName --zip-file fileb://function.zip --region us-east-2

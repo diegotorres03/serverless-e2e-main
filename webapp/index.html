@@ -9,12 +9,15 @@
 
     <link rel="stylesheet" href="./css/main.css">
     <!-- <script src="./src/web-component.js" async></script> -->
+    <script src="./src/tools.js"></script>
     <script src="./src/caffe-menu.component.js" type="module"></script>
     <script src="./src/caffe-menu-item.component.js" type="module"></script>
     <script src="./src/caffe-cart.component.js" type="module"></script>
     <script src="./src/caffe-cart-item.component.js" type="module"></script>
     <script src="./src/caffe-order-history.component.js" type="module"></script>
     <script src="./src/caffe-order-history-item.component.js" type="module"></script>
+    <!-- <script src="./src/drag-drop.component.js" type="module"></script> -->
+    <!-- <script src="./src/indexed-db.js" type="module"></script> -->
 
 </head>
 
@@ -31,7 +34,7 @@
 
             <div class="link-container">
                 <button class="test-cart-btn"><a href="#">CART</a></button>
-                <button class="test-user-btn"><a href="#">USER</a></button>
+                <button id="login-btn" class="test-user-btn"><a href="#">LOGIN</a></button>
             </div>
 
         </nav>
@@ -59,14 +62,32 @@
 
     <caffe-order-history>
 
-        <caffe-order-history-item customer="asd" id="989898">
+        <!-- <caffe-order-history-item customer="asd" id="989898">
             <caffe-cart-item name="Coffee" type="beberage" qty="3" editable="false"></caffe-cart-item>
             <caffe-cart-item name="Coffee" type="beberage" qty="3" editable="false"></caffe-cart-item>
-        </caffe-order-history-item>
-
+        </caffe-order-history-item> -->
 
     </caffe-order-history>
 
+
+
+    <drag-zone>
+        <!-- <b>item 1</b>
+        <b>item 2</b>
+        <b>item 3</b> -->
+    </drag-zone>
+
+    <drop-zone></drop-zone>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    <!-- <script src="./src/indexed-db.js"></script> -->
+    <script src="./src/order.class.js"></script>
     <script src="./src/main.js"></script>
 
 </body>

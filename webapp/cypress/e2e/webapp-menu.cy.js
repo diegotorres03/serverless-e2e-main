@@ -1,7 +1,10 @@
 /// <reference types="cypress" />
 
+const { webapp } = require('../../webapp.json')
+
+// const url = 'https://' + webapp.webappDnsUrl
 const url = 'http://localhost:8080'
-// const url = 'https://remote-app-here'
+// const url = 'https://d1031wyalgn1ok.cloudfront.net/'
 
 
 describe('Item Selection', () => {
@@ -45,9 +48,8 @@ describe('Item Selection', () => {
     beforeEach(() => { cy.visit(url) })
 
     it('place order, clear order section', () => {
+        
         cy.get('#place-order-btn-wc').first().click().then(() => {
-
-            // cy.wait(2000)
             cy.get('.shopping-cart-container caffe-cart-item').should('have.length', 0)
         })
     })

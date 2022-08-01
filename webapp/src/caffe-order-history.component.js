@@ -1,13 +1,13 @@
-const html = function (templates, ...values) {
-    const template = document.createElement('template')
-    let str = ''
-    templates.forEach((template, index) => {
-        str += template
-        str = values[index] ? str + values[index] : str
-    })
-    template.innerHTML = str.trim()
-    return template.content.firstChild
-}
+// const html = function (templates, ...values) {
+//     const template = document.createElement('template')
+//     let str = ''
+//     templates.forEach((template, index) => {
+//         str += template
+//         str = values[index] ? str + values[index] : str
+//     })
+//     template.innerHTML = str.trim()
+//     return template.content
+// }
 
 class CaffeOrderHistory extends HTMLElement {
 
@@ -42,7 +42,7 @@ class CaffeOrderHistory extends HTMLElement {
                     .outerHTML)}
             </caffe-order-history-item>
         `
-        console.log('adding item', orderItem)
+        // console.log('adding item', orderItem)
         const index = this._children.findIndex(child => child.id === order.id)
 
         if(index === -1) {

@@ -1,18 +1,17 @@
 
-npm i
-
-# test function
-npm run test
+npm ci
 
 # read a json file
-$config=Get-Content -Raw -Path '..\backend.json' | ConvertFrom-Json -Depth 4
+$Config = Get-Content -Raw -Path '..\backend.json' | ConvertFrom-Json -Depth 4
 
-Write-Output "updating function" $config.backend.sqsLambda
+$functionName = $Config.backend.sqsLambda
 
-$exists=Test-Path .\create-order.zip 
+$exists=Test-Path .\function.zip 
 if ($exists) { 
-    Remove-Item .\create-order.zip 
+    Remove-Item .\function.zip
 }
 
-Compress-Archive -Path .\*.js -DestinationPath .\sqs-handler
-aws lambda update-function-code --function-name $config.backend.sqsLambda --zip-file fileb://sqs-handler.zip
+Compress-Archive -DestinationPath function.zip -Path ./* -Force
+
+# [o] https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-code.html
+aws lambda update-function-code --function-name $functionName --zip-file fileb://function.zip --region us-east-2

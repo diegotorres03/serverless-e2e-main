@@ -9,9 +9,7 @@ $bucketName="s3://" + $WebappConfig.webapp.webappBucketName
 $distributionId=$WebappConfig.webapp.distributionId
 
 
-# [ ] copy webapp.json to webapp folder
-
-# this is the same as cp ../webapp.json .
+# copy webapp.json to webapp folder
 Copy-Item -Path ..\api.json -Destination .
 # Copy-Item -Path ..\webapp.json -Destination . # this might not be needed here
 
@@ -20,7 +18,7 @@ Copy-Item -Path ..\api.json -Destination .
 Write-Host 'Uploading assets to' + $bucketName
 
 # this use the stored bucket name
-aws s3 cp .  $bucketName --recursive
+aws s3 cp . $bucketName --recursive
 
 
 #  [ ] 1.2.2: add command to invalidate cloudfront distribution [docs](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html)

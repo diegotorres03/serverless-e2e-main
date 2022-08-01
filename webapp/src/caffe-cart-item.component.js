@@ -1,16 +1,16 @@
 
-const html = function (templates, ...values) {
-    const template = document.createElement('template')
-    let str = ''
-    templates.forEach((template, index) => {
-        str += template
-        str = values[index] ? str + values[index] : str
-    })
-    // console.log(str)
-    template.innerHTML = str.trim()
-    return template.content.firstChild
-    // return template.content.cloneNode(true)
-}
+// const html = function (templates, ...values) {
+//     const template = document.createElement('template')
+//     let str = ''
+//     templates.forEach((template, index) => {
+//         str += template
+//         str = values[index] ? str + values[index] : str
+//     })
+//     // console.log(str)
+//     template.innerHTML = str.trim()
+//     return template.content
+//     // return template.content.cloneNode(true)
+// }
 
 
 function getEditability(editable) {
@@ -69,19 +69,19 @@ class CaffeCartItem extends HTMLElement {
 
     // called every time an element is inserted into the DOM
     connectedCallback() {
-        console.log('connectedCallback')
+        // console.log('connectedCallback')
         this._render()
     }
 
     // called every time an element is removed from the DOM
     disconnectedCallback() {
-        console.log('disconnectedCallback')
+        // console.log('disconnectedCallback')
 
     }
 
     // called every time an attribute is added, removed or updated
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log('attributeChangedCallback', name, oldValue, newValue)
+        // console.log('attributeChangedCallback', name, oldValue, newValue)
 
         const qtyEl = this.querySelector('.cart-item-qty')
         const nameEl = this.querySelector('.cart-item-name')
