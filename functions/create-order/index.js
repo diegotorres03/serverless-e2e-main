@@ -40,7 +40,7 @@ async function handler(event) {
     // console.log(eventJson)
     const order = new Order(JSON.parse(event.body))
     // console.log(order)
-    // [ ] 3.3.2: use table on createOrder - save order on dynamodb table [docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#put-property)
+    // [ ] 3.2.2: use table on createOrder - put order on dynamodb table
 
     await dynamo.put({
         TableName: ordersTable,
@@ -58,4 +58,4 @@ async function handler(event) {
     }
 }
 
-module.exports = { handler };
+module.exports = { handler }

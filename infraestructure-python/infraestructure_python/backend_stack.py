@@ -42,15 +42,15 @@ class BackendStack(Stack):
             value= orders_table.table_arn
         )
 
-        # [ ] 4.1.1: create processing orders queue [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_sqs/Queue.html)
+        # [ ] 4.1.1: create processing orders queue
         orders_queue = sqs.Queue(self, 'ordersQueue', 
             visibility_timeout=Duration.seconds(60)
         )
 
-        # [ ] 4.1.2: create user notification topic (sns) [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_sns/Topic.html)
+        # [ ] 4.1.2: create user notification topic (sns)
         user_notification_topic = sns.Topic(self, 'userNotification')
 
-        # [ ] 4.2.1: create a lambda to handle dynamodb stream [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_lambda/Function.html)
+        # [ ] 4.2.1: create a lambda to handle dynamodb stream
         dynamo_lambda = lambda_.Function(self, 'dynamoHandler',
             runtime=lambda_.Runtime.NODEJS_16_X,
             code=lambda_.Code.from_asset('../functions/dynamo-handler'),
@@ -60,11 +60,10 @@ class BackendStack(Stack):
         dynamo_lambda.add_environment('TS_DB', '')
         dynamo_lambda.add_environment('TS_TABLE', '')
         CfnOutput(self, 'dynamoLambda-py', 
-            export_name='dynamoLambda-py', 
             value= dynamo_lambda.function_name
         )
 
-        # [ ] 4.2.2: create a lambda to handle sqs messages [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_lambda/Function.html)
+        # [ ] 4.2.2: create a lambda to handle sqs messages
         sqs_lambda = lambda_.Function(self, 'sqsHandler',
             runtime=lambda_.Runtime.NODEJS_16_X,
             code=lambda_.Code.from_asset('../functions/sqs-handler'),
@@ -77,23 +76,17 @@ class BackendStack(Stack):
         )
 
 
-        # [ ] 4.3.1: set lambda 4.2.1 as handler for dynamodb table updates [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_lambda/Function.html)
-
-        # allow lambda to read dynamo streams
+        # [ ] 4.3.1: set lambda 4.2.1 as handler for dynamodb table updates
         orders_table.grant_stream_read(dynamo_lambda)
-
-        # add orders_table as source for lambda
         dynamo_lambda.add_event_source(lambda_event_sources.DynamoEventSource(orders_table,
             starting_position=lambda_.StartingPosition.TRIM_HORIZON,
             batch_size=10
         ))
 
-        # [ ] 4.3.2: set lambda 4.2.2 as handler for sqs queue messages [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html)
-        
-        # allow lambda to publish messages on queue
+        # [ ] 4.3.2: set lambda 4.2.2 as handler for sqs queue messages
         orders_queue.grant_send_messages(sqs_lambda)
-
-        # add orders_queue as source for lambda
-        sqs_lambda.add_event_source(lambda_event_sources.SqsEventSource(orders_queue, batch_size= 2))
+        sqs_lambda.add_event_source(
+            lambda_event_sources.SqsEventSource(orders_queue, batch_size= 2)
+        )
 
 

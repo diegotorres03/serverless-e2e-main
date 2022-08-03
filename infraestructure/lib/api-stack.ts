@@ -51,11 +51,12 @@ export class RestApiStack extends Stack {
         })
         new CfnOutput(this, 'updateOrderLambda', { value: updateOrderLambda.functionName })
 
-        // [ ] can we do this importing an OpenAPI file 
-
+        // [ ] 3.1.2: grant lambda access to dynamo table
+        ordersTable.grantReadWriteData(createOrderLambda)
+        ordersTable.grantReadWriteData(getOrdersLambda)
+        ordersTable.grantReadWriteData(updateOrderLambda)        
+        
         // ApiGateway.AuthorizationType.CUSTOM
-
-
         // [ ] 5.1.1 create authenticate lambda function
         const authenticateLambda = new Lambda.Function(this, 'authenticate', {
             runtime: Lambda.Runtime.NODEJS_14_X,
@@ -127,10 +128,7 @@ export class RestApiStack extends Stack {
         // const lambdaRole = IAM.Role.fromRoleName(this, 'lambdaRole', apiConfig.lambda.role)
         // ordersTable.grantReadWriteData(lambdaRole)
 
-        // this way to add access directly on lambda function
-        ordersTable.grantReadWriteData(createOrderLambda)
-        ordersTable.grantReadWriteData(getOrdersLambda)
-        ordersTable.grantReadWriteData(updateOrderLambda)
+ 
 
 
         // const boundary1 = new IAM.ManagedPolicy(this, 'permissions-boundary-ECS', {

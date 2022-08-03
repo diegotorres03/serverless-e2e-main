@@ -18,7 +18,7 @@ class ApiStack(Stack):
 
         # [import value](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk/Fn.html#aws_cdk.Fn.import_value)
         # [add env variables to lambda](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_lambda/Function.html#aws_cdk.aws_lambda.Function.add_environment)
-        # [ ] 3.1.2: connect api to dynamodb [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_dynamodb/Table.html#aws_cdk.aws_dynamodb.Table.from_table_arn)
+        # [ ] 3.1.2: connect api to dynamodb
         orders_table_arn = Fn.import_value('ordersTableArn-py')
         orders_table = dynamo.Table.from_table_arn(self, 'ordersTable', orders_table_arn)
 
@@ -28,9 +28,7 @@ class ApiStack(Stack):
             handler='index.handler',
             code=lambda_.Code.from_asset('../functions/get-orders')
         )
-        # 3.1.2
         get_orders_lambda.add_environment('ORDERS_TABLE', orders_table.table_name)
-        orders_table.grant_read_write_data(get_orders_lambda)
         CfnOutput(self, 'get_orders_lambda', value= get_orders_lambda.function_name)
 
 
@@ -40,9 +38,7 @@ class ApiStack(Stack):
             handler='index.handler',
             code=lambda_.Code.from_asset('../functions/create-order'),
         )
-        # 3.1.2
         create_orders_lambda.add_environment('ORDERS_TABLE', orders_table.table_name)
-        orders_table.grant_read_write_data(create_orders_lambda)
         CfnOutput(self, 'create_orders_lambda', value= create_orders_lambda.function_name)
 
 
@@ -52,11 +48,13 @@ class ApiStack(Stack):
             handler='index.handler',
             code=lambda_.Code.from_asset('../functions/update-order')
         )
-        # 3.1.2
         update_orders_lambda.add_environment('ORDERS_TABLE', orders_table.table_name)
-        orders_table.grant_read_write_data(update_orders_lambda)
         CfnOutput(self, 'update_orders_lambda', value= update_orders_lambda.function_name)
 
+        # [ ] 3.1.2: grant lambda access to dynamo table 
+        orders_table.grant_read_write_data(get_orders_lambda)
+        orders_table.grant_read_write_data(create_orders_lambda)
+        orders_table.grant_read_write_data(update_orders_lambda)
 
         # [ ] 2.2.1: create api [docs](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_apigateway/RestApi.html)
         api = apigateway.RestApi(self, 'ordersApi',

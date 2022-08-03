@@ -38,8 +38,9 @@ async function handler(event) {
     const cusotmer = event.pathParameters.customer
     const { status, _filledAt } = JSON.parse(event.body)
 
-    // [x] 3.2.3: use table on updateOrder - patch an order on dynamodb table [docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#update-property)
-    const res = await dynamo.update({
+    let response = null
+    // [ ] 3.2.3: use table on updateOrder - update an order on dynamodb table
+    response = await dynamo.update({
         TableName: ordersTable,
         Key: {
             id: orderId,
@@ -51,7 +52,7 @@ async function handler(event) {
     }).promise()
 
     return {
-        body: JSON.stringify(res),
+        body: JSON.stringify(response),
         statusCode: 200,
         headers: {
             "Content-Type": "application/json",
