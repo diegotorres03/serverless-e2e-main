@@ -98,7 +98,7 @@ export class RestApiStack extends Stack {
         // export api value so it can be called by other stacks
         new CfnOutput(this, 'apiUrl', { value: api.url })
 
-        // [ ] 5.1.2 create an endpoint fot authentication
+        // [ ] 5.1.2 create an endpoint for authentication
         const authEndpoint = api.root
             .addResource('authenticate')
             .addMethod('POST', new ApiGateway.LambdaIntegration(authenticateLambda, { proxy: true }))

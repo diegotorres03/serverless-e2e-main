@@ -56,7 +56,9 @@ const backend = new BackendStack(app, 'backend', {
 //   ]
 // }
 
-const boundary = (stackParam: IConstruct) => new cdk.aws_iam.ManagedPolicy(stackParam, 'permissions-boundary-ECS', {
+
+// [ ] 5.4.1  define Policy Boundary
+const boundary = (stackParam: IConstruct) => new cdk.aws_iam.ManagedPolicy(stackParam, 'permissions-boundary', {
   statements: [
     new cdk.aws_iam.PolicyStatement({
       effect: cdk.aws_iam.Effect.DENY,
@@ -66,6 +68,7 @@ const boundary = (stackParam: IConstruct) => new cdk.aws_iam.ManagedPolicy(stack
   ],
 })
 
+// [ ] 5.4.2 attach boundary to all constructs
 cdk.aws_iam.PermissionsBoundary
   .of(backend)
   .apply(boundary(backend))
