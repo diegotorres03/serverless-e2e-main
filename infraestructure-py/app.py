@@ -13,11 +13,11 @@ from infraestructure_python.backend_stack import BackendStack
 
 app = cdk.App()
 
-webapp = WebappStack(app, 'webapp-py', env=cdk.Environment(region='us-east-2'))
+webapp = WebappStack(app, 'webapp', env=cdk.Environment(region='us-east-2'))
 
-api = ApiStack(app, 'api-py', env=cdk.Environment(region='us-east-2'))
+api = ApiStack(app, 'api', env=cdk.Environment(region='us-east-2'))
 
-backend = BackendStack(app, 'backend-py', env=cdk.Environment(region='us-east-2'))
+backend = BackendStack(app, 'backend', env=cdk.Environment(region='us-east-2'))
 
 # api depends on backend
 

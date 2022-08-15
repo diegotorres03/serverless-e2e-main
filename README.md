@@ -45,7 +45,7 @@
 5.  **Security:**
     1. **Web App Access Control (Custom auth):** How to secure app?
        1. [ ] create authenticate lambda function
-       2. [ ] create an endpoint fot authentication
+       2. [ ] create an endpoint for authentication
     2. **API Access Control (Custon authorizer):**
        1. [ ] create the custom authorizer
        2. [ ] add authorizer to private endpoints

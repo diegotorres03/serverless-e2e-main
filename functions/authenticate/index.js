@@ -9,7 +9,7 @@ async function handler(event) {
     const username = event.body.username
 
     return {
-        body: JSON.stringify({}),
+        body: JSON.stringify({token: 'json.web.token'}),
         statusCode: 200,
         headers: {
             "Authorization": "json.web.token",

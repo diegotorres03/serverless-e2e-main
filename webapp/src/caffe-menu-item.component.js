@@ -84,7 +84,5 @@ class CaffeMenuItem extends HTMLElement {
 
 window.customElements.define('caffe-menu-item', CaffeMenuItem)
 
-console.log('CaffeMenuItem', CaffeMenuItem)
-
 // const caffeMenu = new CaffeMenuItem()
 // document.body.appendChild(caffeMenu)

@@ -63,6 +63,8 @@ export class RestApiStack extends Stack {
             code: Lambda.Code.fromAsset('../functions/authenticate'),
             handler: 'index.handler',
         })
+        new CfnOutput(this, 'authenticateLambda', { value: authenticateLambda.functionName })
+
 
         // [ ] 5.2.1 create the custom authorizer
         const authorizerLambda = new Lambda.Function(this, 'authorize', {
@@ -70,6 +72,7 @@ export class RestApiStack extends Stack {
             code: Lambda.Code.fromAsset('../functions/authorize'),
             handler: 'index.handler',
         })
+        new CfnOutput(this, 'authorizerLambda', { value: authorizerLambda.functionName })
 
 
         // [ ] 2.2.1: create api [docs](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.RestApi.html)

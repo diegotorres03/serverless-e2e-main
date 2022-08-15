@@ -16,16 +16,3 @@
     template.innerHTML = str.trim()
     return template.content.firstChild
 }
-
-
-// function importScript(url) {
-//     const newScript = document.createElement("script")
-//     newScript.src = url //"http://www.example.com/my-script.js"
-//     target.appendChild(newScript)
-
-//     // var newScript = document.createElement("script");
-//     // var inlineScript = document.createTextNode("alert('Hello World!');");
-//     // newScript.appendChild(inlineScript); 
-//     // target.appendChild(newScript);
-
-// }

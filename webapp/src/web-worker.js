@@ -54,20 +54,22 @@ const refreshOrders = async (apiUrl) => {
     console.time('local orders')
     const localOrders = await db.getOrders()
     // console.log(localOrders)
-    
+
     const ordersToDelete = localOrders.filter(order => Date.now() > (Number(order._expireOn) * 1000))
-    if(ordersToDelete.length > 0) console.log('deleting', ordersToDelete.length)
-    
+    if (ordersToDelete.length > 0) console.log('deleting', ordersToDelete.length)
+
     const deletePromises = ordersToDelete.map(order => db.deleteOrder(order.id))
     await Promise.all(deletePromises)
-    
+
     this.postMessage({
         type: 'getOrders',
         orders: localOrders,
     })
     console.timeEnd('local orders')
-    
+
 }
+
+let token = null
 
 onmessage = async function (event) {
     const { apiUrl } = await loadApiSettings()
@@ -80,6 +82,7 @@ onmessage = async function (event) {
 
     const eventType = event.data.type
 
+    if (eventType === 'session') return token = event.data.token
     if (eventType === 'getOrders') return refreshOrders(apiUrl)
 
     if (eventType === 'createOrder') {
@@ -93,18 +96,48 @@ onmessage = async function (event) {
 
         return refreshOrders(apiUrl)
     }
+
+    if (eventType === 'logout') {
+        console.log('logging out', token)
+        return token = null
+    }
+
+    if (eventType === 'login') {
+        const { credentials } = event.data
+        console.log('logging in with ', credentials)
+        await login(`${apiUrl}authenticate`, credentials)
+        return
+    }
+
+
     console.groupEnd()
 }
 
+async function login(authUrl, credentials) {
+    const { token } = await fetch(authUrl, {
+        method: 'POST',
+        body: JSON.stringify(credentials),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(res => res.json())
+    console.log(token)
+    this.postMessage({ type: 'loggedin', token, })
+    return token
+}
 
 async function getOrders(apiUrl) {
     const url = `${apiUrl}orders`
     // [ ] 2.3.1: get orders from api
 
+    console.log('token on get orders', token)
     const orders = await fetch(url,
-
         // [ ] 5.3.1 use Authorization header on http getOrders
-        { headers: { 'Authorization': 'json.web.token' } }
+        {
+            headers: {
+                'Authorization': token, //'json.web.token', 
+            }
+        }
     ).then(res => res.json())
     return orders
 }
@@ -117,7 +150,7 @@ async function getOrdersHtml(apiUrl) {
         {
             headers: {
                 'Content-Type': 'text/html',
-                'Authorization': 'json.web.token',
+                'Authorization': token, // 'json.web.token',
             }
         }
     ).then(res => res.text()).catch(err => console.warn(err))

@@ -1,24 +1,9 @@
-// GetIndexedDBInstance().then(db => console.log(db))
-
-// const html = function (templates, ...values) {
-//     const template = document.createElement('template')
-//     let str = ''
-//     templates.forEach((template, index) => {
-//         str += template
-//         str = values[index] ? str + values[index] : str
-//     })
-//     template.innerHTML = str
-//     return template.content
-// }
 
 
-// run()
-runWithWorker()
+if (typeof (Worker) === "undefined") run()
+else runWithWorker()
 
-// if (typeof (Worker) === "undefined") run()
-// else runWithWorker()
-
-// registerServiceWorker()
+registerServiceWorker()
 
 async function loadApiSettings() {
     const settings = await fetch('/api.json').then(res => res.json())
@@ -62,9 +47,24 @@ async function runWithWorker() {
     const cart = document.querySelector('caffe-cart')
     const history = document.querySelector('caffe-order-history')
 
+    const loginBtn = document.querySelector('#login-btn')
+
+    const token = window.localStorage.getItem('token')
+    if (token) {
+        loginBtn.querySelector('a').textContent = 'LOG OUT'
+        worker.postMessage({ type: 'session', token })
+    } else {
+        worker.postMessage({ type: 'logout' })
+    }
+
     worker.onmessage = (msg) => {
         if (msg.data.type === 'getOrders') appendOrders(msg.data.orders, history, '.order-history')
         if (msg.data.type === 'createOrder') cart.clear()
+        if (msg.data.type === 'loggedin') {
+            console.log(msg.data.token)
+            window.localStorage.setItem('token', msg.data.token)
+            loginBtn.querySelector('a').textContent = 'LOG OUT'
+        }
     }
 
     cart.addEventListener('onplaceorder', async event => {
@@ -78,6 +78,21 @@ async function runWithWorker() {
     menu.addEventListener('item-added', event => {
         console.log('item-added', event)
         cart.addItem(event.detail)
+    })
+
+
+    loginBtn.addEventListener('click', async event => {
+        if (loginBtn.querySelector('a').textContent === 'LOG OUT') {
+            loginBtn.querySelector('a').textContent = 'LOG IN'
+            window.localStorage.removeItem('token')
+            worker.postMessage({ type: 'logout' })
+            alert('thank you, see you soon')
+            return
+        }
+        const username = prompt('username')
+        const password = prompt('password')
+        // login(username, password)
+        worker.postMessage({ type: 'login', credentials: { username, password } })
     })
 
     worker.postMessage({ type: 'getOrders' })
@@ -97,52 +112,52 @@ async function refreshOrders(apiUrl, history, selector) {
  * @param {Order} order
  * @return {*} 
  */
-function createOrder(apiUrl, order) {
-    const url = apiUrl + 'orders'
+// function createOrder(apiUrl, order) {
+//     const url = apiUrl + 'orders'
 
-    // [ ] 2.3.2: send the order to the api
-    const options = {
-        method: 'POST',
-        body: JSON.stringify(order),
-        headers: {
-            'Content-Type': 'application/json',
+//     // [ ] 2.3.2: send the order to the api
+//     const options = {
+//         method: 'POST',
+//         body: JSON.stringify(order),
+//         headers: {
+//             'Content-Type': 'application/json',
 
-            // [ ] 5.3.2 use Authorization header on http createOrder
-            'Authorization': 'json.web.token'
-        }
-    }
+//             // [ ] 5.3.2 use Authorization header on http createOrder
+//             'Authorization': 'json.web.token'
+//         }
+//     }
 
-    return fetch(url, options).then(res => res.json())
-}
+//     return fetch(url, options).then(res => res.json())
+// }
 
 
-async function getOrders(apiUrl) {
-    const url = `${apiUrl}orders`
-    // [ ] 2.3.1: get orders from api
-    const orders = await fetch(url,
+// async function getOrders(apiUrl) {
+//     const url = `${apiUrl}orders`
+//     // [ ] 2.3.1: get orders from api
+//     const orders = await fetch(url,
 
-        // [ ] 5.3.1 use Authorization header on http getOrders
-        { headers: { 'Authorization': 'json.web.token' } }
-    ).then(res => res.json())
-    return orders
-}
+//         // [ ] 5.3.1 use Authorization header on http getOrders
+//         { headers: { 'Authorization': 'json.web.token' } }
+//     ).then(res => res.json())
+//     return orders
+// }
 
-async function getOrdersHtml(apiUrl) {
-    const url = `${apiUrl}orders`
-    console.log('getting orders html', url)
-    // [o] 2.3.1: get orders from api
-    const ordersHtml = await fetch(url,
-        // [o] 5.3.1 use Authorization header on http getOrders
-        {
-            headers: {
-                'Content-Type': 'text/html',
-                'Authorization': 'json.web.token',
-            }
-        }
-    ).then(res => res.text()).catch(err => console.warn(err))
-    // console.log(ordersHtml)
-    return ordersHtml
-}
+// async function getOrdersHtml(apiUrl) {
+//     const url = `${apiUrl}orders`
+//     console.log('getting orders html', url)
+//     // [o] 2.3.1: get orders from api
+//     const ordersHtml = await fetch(url,
+//         // [o] 5.3.1 use Authorization header on http getOrders
+//         {
+//             headers: {
+//                 'Content-Type': 'text/html',
+//                 'Authorization': 'json.web.token',
+//             }
+//         }
+//     ).then(res => res.text()).catch(err => console.warn(err))
+//     // console.log(ordersHtml)
+//     return ordersHtml
+// }
 
 
 function appendOrders(orders, container, selector) {
@@ -168,9 +183,11 @@ async function registerServiceWorker() {
     if (!'serviceWorker' in navigator) return console.warn('no service worker support')
     console.info('registering service worker')
     try {
-        const registration = await navigator.serviceWorker.register(`./src/service-worker.js`,
-            // { scope: '/src/' }
-        )
+        console.group('service worker')
+        const registration = await navigator.serviceWorker
+            .register(`./src/service-worker.js`)
+
+        console.log(registration)
 
         if (registration.installing) {
             console.log('Service worker installing');
@@ -182,6 +199,8 @@ async function registerServiceWorker() {
 
     } catch (err) {
         console.error(`Registration failed with ${err}`)
+    } finally {
+        console.groupEnd('service worker')
     }
 }
 

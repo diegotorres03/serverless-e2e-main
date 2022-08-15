@@ -1,10 +1,8 @@
 {
   "backend": {
-    "timestreamTable": "ordersts",
-    "sqsLambda": "backend-sqsHandler9E1A7184-yxOnVdupUyRE",
-    "dynamoLambda": "backend-dynamoHandler15FDB600-6xnnpoeUuYA3",
-    "ordersTableArn": "arn:aws:dynamodb:us-east-2:760178732320:table/backend-orders46FA7C19-1ULUF4MSO9ML2",
-    "timestreamDB": "serverless-e2e-db",
-    "ordersTableName": "backend-orders46FA7C19-1ULUF4MSO9ML2"
+    "ordersTableArnpy": "arn:aws:dynamodb:us-east-2:424404940127:table/backend-orders46FA7C19-1EDGCDT41E6CI",
+    "dynamoLambdapy": "backend-dynamoHandler15FDB600-ks3qpaMbqAxl",
+    "sqsLambdapy": "backend-sqsHandler9E1A7184-jOUbWfzJxJM4",
+    "ordersTableNamepy": "backend-orders46FA7C19-1EDGCDT41E6CI"
   }
 }

@@ -9,10 +9,10 @@ const app = new cdk.App()
 
 
 // creating WebAppStack
-const testWebapp = new WebAppStack(app, 'testWebapp', {
-  env: { region: process.env.AWS_REGION },
-  assetsPath: '../test-webapp'
-})
+// const testWebapp = new WebAppStack(app, 'testWebapp', {
+//   env: { region: process.env.AWS_REGION },
+//   assetsPath: '../test-webapp'
+// })
 
 // creating WebAppStack
 const apidoc = new WebAppStack(app, 'apidoc', {
@@ -66,18 +66,18 @@ const boundary = (stackParam: IConstruct) => new cdk.aws_iam.ManagedPolicy(stack
   ],
 })
 
-// cdk.aws_iam.PermissionsBoundary
-//   .of(backend)
-//   .apply(boundary(backend))
+cdk.aws_iam.PermissionsBoundary
+  .of(backend)
+  .apply(boundary(backend))
 
 
-// cdk.aws_iam.PermissionsBoundary
-//   .of(api)
-//   .apply(boundary(api))
+cdk.aws_iam.PermissionsBoundary
+  .of(api)
+  .apply(boundary(api))
 
 
-// cdk.aws_iam.PermissionsBoundary
-//   .of(webapp)
-//   .apply(boundary(webapp))
+cdk.aws_iam.PermissionsBoundary
+  .of(webapp)
+  .apply(boundary(webapp))
 
 // api depends on backend
