@@ -1,6 +1,8 @@
 <!-- https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/lambda-creating-project-in-visual-studio.html -->
 
 
+[sfdc opp](https://aws-crm.lightning.force.com/lightning/r/Opportunity/0064z000027y7WlAAI/view)
+
 [Typescrit for C# devs](https://www.youtube.com/watch?v=MRLUylSe6Dc)
 
 
