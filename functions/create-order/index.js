@@ -33,6 +33,31 @@ const region = process.env.REGION || 'us-east-2'
 const dynamo = new aws.DynamoDB.DocumentClient({ region })
 
 
+/**
+ * @api {post} /orders create an order on ddbb =)
+ * @apiName CreateOrder
+ * @apiGroup CreateOrder
+ * @apiVersion  1.1.1
+ *
+ * @apiBody {OrderJSON} order order
+ * @apiSuccess {OrderJSON} log newly created log.
+ * @apiSuccessExample {OrderJSON} Success-Response:
+ * {
+ *    "username": "alejo",
+ *    "date": "1656017418934",
+ *    "notes": [
+ *     "sample text"
+ *    ],
+ *    "options": {
+ *     "bowType": "recurve",
+ *     "category": "junior",
+ *     "gender": "male"
+ *    },
+ *    "value": 90,
+ *    "_autoapprove": 1656018019
+ * }
+ * 
+ */
 async function handler(event) {
     console.log('\n\n', ordersTable, '\n\n')
     const eventJson = JSON.stringify(event, null, 2)

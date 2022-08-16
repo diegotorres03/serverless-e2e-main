@@ -31,6 +31,33 @@ class Order {
 const ordersTable = process.env.ORDERS_TABLE
 const dynamo = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
 
+
+/**
+ * 
+ * @api {patch} /orders/:customer/:id updateOrder
+ * @apiName UpdateOrder
+ * @apiGroup UpdateOrder
+ * @apiVersion  1.1.1
+ * 
+ * 
+ * @apiParam  {String} customer customer id
+ * @apiParam  {String} id order id
+ * 
+ * @apiSuccess (200) {type} name description
+ * 
+ * @apiParamExample  {type} Request-Example:
+ * {
+ *     status: 'done'
+ * }
+ * 
+ * 
+ * @apiSuccessExample {type} Success-Response:
+ * {
+ *     success: true
+ * }
+ * 
+ * 
+ */
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)
     console.log(eventJson)

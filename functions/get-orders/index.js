@@ -69,26 +69,30 @@ function toJson(orders) {
 
 /**
  * 
- * @api {GET} /orders getOrders
- * @apiName cafe
- * @apiGroup group
+ * @api {get} /orders getOrders
+ * @apiName GetOrders
+ * @apiGroup GetOrders
  * @apiVersion  1.1.1
  * 
  * 
- * @apiParam  {String} paramName description
- * 
- * @apiSuccess (200) {type} name description
- * 
- * @apiParamExample  {type} Request-Example:
- * {
- *     property : value
- * }
+ * @apiSuccess (200) {type} list of orders
  * 
  * 
- * @apiSuccessExample {type} Success-Response:
- * {
- *     property : value
- * }
+ * @apiSuccessExample {OrderJSON[]} Success-Response:
+ * [{
+ *    "username": "alejo",
+ *    "date": "1656017418934",
+ *    "notes": [
+ *     "sample text"
+ *    ],
+ *    "options": {
+ *     "bowType": "recurve",
+ *     "category": "junior",
+ *     "gender": "male"
+ *    },
+ *    "value": 90,
+ *    "_autoapprove": 1656018019
+ * }]
  * 
  * 
  */

@@ -86,7 +86,7 @@ export class BackendStack extends Stack {
         }))
 
         // [ ] 4.3.2: set lambda 4.2.2 as handler for sqs queue messages
-        ordersQueue.grantSendMessages(dynamoLambda)
+        ordersQueue.grantSendMessages(sqsLambda)
         sqsLambda.addEventSource(new LambdaEventSources.SqsEventSource(ordersQueue, {
             batchSize: 2,
         }))

@@ -29,30 +29,6 @@ class Order {
     }
 }
 
-/**
- * @api {post} /orders create an order on ddbb
- * @apiName CreateOrder
- * @apiGroup Orders
- *
- * @apiBody {OrderJSON} order order
- * @apiSuccess {OrderJSON} log newly created log.
- * @apiSuccessExample {type} Success-Response:
- * {
- *    "username": "alejo",
- *    "date": "1656017418934",
- *    "notes": [
- *     "sample text"
- *    ],
- *    "options": {
- *     "bowType": "recurve",
- *     "category": "junior",
- *     "gender": "male"
- *    },
- *    "value": 90,
- *    "_autoapprove": 1656018019
- * }
- * 
- */
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)
     console.log(eventJson)

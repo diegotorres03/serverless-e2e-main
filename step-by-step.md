@@ -1,18 +1,18 @@
 # Serverless e2e Immersion Day
-Welcome to the `Serverless End to End` immersion day.
+Welcome to the Serverless End to End immersion day.
 
-Please join us on an adventure where we will discover how a modern application comes to life. Our journey will begin inside the browser, where we will deliver the best possible experience to our customers by leveraging the most up to date features modern browsers have to offer.
+We invite you to join us on an adventure where we discover how a modern application comes to life. Our journey will begin in the browser, where we will deliver the best possible experience to our customers by leveraging the most up-to-date features modern browsers have to offer.
 
-Next stop on our trip will be in the AWS cloud where we will open the gates to our webapp so it can talk with our backends.
+The next stop on our trip will be in the AWS cloud where we will open the gates to our webapp, allowing it to talk to our backends.
 
-Next, let’s make it persistent. We will be exploring Serverless databases to allow us to scale as needed with no downtime, a few users? no problem, a few million users? still no problem, code once and scale in an out in a breeze.
+Next, let’s make it persistent. We will be exploring Serverless databases to allow us to scale as needed with no downtime. Only have a few users? No problem. A few million users? Still no problem. Code once, and scale in and out as you please.
 
-Is this it??
+Is that it?!
 
 Well... no.
 
-We will next discover the wonders of event driven architectures, where instead of coordinating steps between multiple systems, we will enable systems to subscribe to the event sources they need, allowing for a flexible architecture that can change as the business needs change.
-You might be wondering; how can we protect all we have created so far?? Don’t worry, we have you covered. In the last stage of our journey, we will protect our application and infrastructure so we can sleep in peace.
+We will next discover the wonders of event driven architectures, where instead of coordinating steps between multiple systems, we will enable systems to subscribe to the event sources they need. This allows for flexible architecture that can change as the business needs change. You might be wondering - how can we protect all that we have created?? Don’t worry, we have you covered. In the last stage of our journey, we will secure our application and infrastructure so that we can sleep in peace.
+
 Get ready for the adventure!!
 
 
@@ -49,7 +49,8 @@ In order to properly run this lab, we will require the following applications:
 
 # Before the lab
 1. clone [Serverless-e2e-lab](https://github.com/diegotorres03/serverless-e2e-lab) by running `git clone https://github.com/diegotorres03/serverless-e2e-lab.git`  in Powershell.
-2. on Powershell cd in to `infraestructure` if you want to use Typescript or in `infraestructure-py` yf you want do use Python, then run `cdk bootstrap`
+2. on Powershell cd in to `infraestructure` if you want to use Typescript or in `infraestructure-py` if you want do use Python, then run `cdk bootstrap`
+3. run `npm i -g apidoc`
 
 ---
 
@@ -242,20 +243,20 @@ aws cloudfront create-invalidation --distribution-id $distributionId --paths '/*
 
 _note: then next updates are set up for next chapter_
 
-**file:** `./infraestructure/lib/backend-stack.ts`
+**file:** `./infraestructure/bin/infraestructure.ts`
 **replace key:** `// imports`
 ```ts
-    RestApiStack,
-    // imports
+import { RestApiStack } from '../lib/api-stack'
+// imports
 ```
 
-**file:** `./infraestructure/lib/backend-stack.ts`
+**file:** `./infraestructure/bin/infraestructure.ts`
 **replace key:** `// creating RestApiStack`
 ```ts
-    // creating RestApiStack
-    const restApi = new RestApiStack(app, 'api', {
-        env: { region: }
-    })
+// creating RestApiStack
+const api = new RestApiStack(app, 'api', {
+    env: { region }
+})
 ```
 
 **file:** `./infraestructure-py/app.py`
@@ -627,20 +628,20 @@ Here we want to start by listing all the orders by doing a get request to the `g
 
 _note: then next updates are set up for next chapter_
 
-**file:** `./infraestructure/lib/backend-stack.ts`
+**file:** `./infraestructure/bin/infraestructure.ts`
 **replace key:** `// imports`
 ```ts
-    BackendStack,
-    // imports
+import { BackendStack } from '../lib/backend-stack'
+// imports
 ```
 
-**file:** `./infraestructure/lib/backend-stack.ts`
+**file:** `./infraestructure/bin/infraestructure.ts`
 **replace key:** `// creating BackendStack`
 ```ts
-    // creating BackendStack
-    const backend = new BackendStack(app, 'backend', {
-        env: { region }
-    })
+// creating BackendStack
+const backend = new BackendStack(app, 'backend', {
+    env: { region }
+})
 ```
 
 
@@ -1117,7 +1118,7 @@ First, lets create an [SQS Queue](https://aws.amazon.com/sqs/)
 **replace key:** `// [ ] 4.3.2: set lambda 4.2.2 as handler for sqs queue messages`
 ```ts
         // [x] 4.3.2: set lambda 4.2.2 as handler for sqs queue messages
-        ordersQueue.grantSendMessages(dynamoLambda)
+        ordersQueue.grantSendMessages(sqsLambda)
         sqsLambda.addEventSource(new LambdaEventSources.SqsEventSource(ordersQueue, {
             batchSize: 2,
         }))
@@ -1286,7 +1287,7 @@ _note: then next updates are set up for next chapter_
 
 ---
 
-# 5.3.1: `use Authorization header on http createOrder`
+# 5.3.2: `use Authorization header on http createOrder`
 
 
 **description:** . 
@@ -1323,6 +1324,7 @@ _note: then next updates are set up for next chapter_
 **file:** `./infraestructure/bin/infraestructure.ts`
 **replace key:** `// [ ] 5.4.1  define Policy Boundary`
 ```ts
+// [x] 5.4.1  define Policy Boundary
 const boundary = (stackParam: IConstruct) => new cdk.aws_iam.ManagedPolicy(stackParam, 'permissions-boundary', {
   statements: [
     new cdk.aws_iam.PolicyStatement({
@@ -1352,6 +1354,7 @@ const boundary = (stackParam: IConstruct) => new cdk.aws_iam.ManagedPolicy(stack
 **file:** `./infraestructure/bin/infraestructure.ts`
 **replace key:** `// [ ] 5.4.2 attach boundary to all constructs`
 ```ts
+// [x] 5.4.2 attach boundary to all constructs
 cdk.aws_iam.PermissionsBoundary
   .of(backend)
   .apply(boundary(backend))
@@ -1366,4 +1369,18 @@ cdk.aws_iam.PermissionsBoundary
   .of(webapp)
   .apply(boundary(webapp))
 
+// done
+
+```
+
+
+
+---
+
+# 0.0.0: `You are All set`
+
+**file:** `./infraestructure/bin/infraestructure.ts`
+**replace key:** `// done`
+```ts
+// done
 ```
