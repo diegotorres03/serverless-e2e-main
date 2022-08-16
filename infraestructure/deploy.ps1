@@ -54,7 +54,7 @@ cdk synth apidoc
 
 # running cfn-guard on apidoc stack
 Write-Output "running cfn-guard on apidoc stack"
-cfn-guard validate -d .\cdk.out\webappStack.template.json -r .\rules\apidoc.rules
+cfn-guard validate -d .\cdk.out\apidoc.template.json -r .\rules\webapp.rules
 
 # deploy apidoc stack and save apidoc.json on root folder
 Write-Output "deploy apidoc stack and save apidoc.json on root folder"

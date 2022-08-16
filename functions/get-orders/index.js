@@ -71,7 +71,7 @@ function toJson(orders) {
  * 
  * @api {get} /orders getOrders
  * @apiName GetOrders
- * @apiGroup GetOrders
+ * @apiGroup Orders
  * @apiVersion  1.1.1
  * 
  * 

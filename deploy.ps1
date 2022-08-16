@@ -1,5 +1,9 @@
 
 
+Write-Host 'Generating apidoc'
+npm run apidoc
+
+
 Write-Host 'Running infra'
 Set-Location infraestructure-py
 . .\deploy.ps1

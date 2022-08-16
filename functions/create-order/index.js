@@ -36,7 +36,7 @@ const dynamo = new aws.DynamoDB.DocumentClient({ region })
 /**
  * @api {post} /orders create an order on ddbb =)
  * @apiName CreateOrder
- * @apiGroup CreateOrder
+ * @apiGroup Orders
  * @apiVersion  1.1.1
  *
  * @apiBody {OrderJSON} order order

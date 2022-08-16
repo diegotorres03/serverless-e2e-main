@@ -2,6 +2,26 @@ const ordersTable = process.env.ORDERS_TABLE
 
 const aws = require('aws-sdk')
 
+
+
+/**
+ * 
+ * @api {post} /authenticate authenticate
+ * @apiName Authenticate
+ * @apiGroup Auth
+ * @apiVersion  1.1.1
+ * 
+ * 
+ * @apiSuccess (200) {type} name description
+ * 
+ * 
+ * @apiSuccessExample {type} Success-Response:
+ * {
+ *     token : 'json.web.token'
+ * }
+ * 
+ * 
+ */
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)
     console.log(eventJson)

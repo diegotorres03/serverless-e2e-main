@@ -36,7 +36,7 @@ const dynamo = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
  * 
  * @api {patch} /orders/:customer/:id updateOrder
  * @apiName UpdateOrder
- * @apiGroup UpdateOrder
+ * @apiGroup Orders
  * @apiVersion  1.1.1
  * 
  * 
