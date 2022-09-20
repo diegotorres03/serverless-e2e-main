@@ -31,32 +31,41 @@ class Order {
 const ordersTable = process.env.ORDERS_TABLE
 const dynamo = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
 
+// README: [apidoc](https://apidocjs.com)
 
 /**
- * 
- * @api {patch} /orders/:customer/:id updateOrder
- * @apiName UpdateOrder
+ * @api {patch} /orders/:cusomer/:id change status of an order
+ * @apiName UpdateOrderStatus
  * @apiGroup Orders
- * @apiVersion  1.1.1
+ * 
+ * @apiParam {string} customer customer id
+ * @apiParam {string} id order id
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *     "customer": "diegotrs",
+ *     "id": "4711"
+ *   }
+ * 
+ * @apiBody {String} status new order status
  * 
  * 
- * @apiParam  {String} customer customer id
- * @apiParam  {String} id order id
- * 
- * @apiSuccess (200) {type} name description
- * 
- * @apiParamExample  {type} Request-Example:
- * {
- *     status: 'done'
- * }
- * 
- * 
- * @apiSuccessExample {type} Success-Response:
- * {
- *     success: true
- * }
- * 
- * 
+ * @apiSuccess (200) {Order} the newly created order
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "username": "alejo",
+ *        "date": "1656017418934",
+ *        "notes": [
+ *         "sample text"
+ *        ],
+ *        "options": {
+ *         "bowType": "recurve",
+ *         "category": "junior",
+ *         "gender": "male"
+ *        },
+ *        "value": 90,
+ *        "_autoapprove": 1656018019
+ *     }
  */
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)

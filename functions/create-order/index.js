@@ -33,30 +33,43 @@ const region = process.env.REGION || 'us-east-2'
 const dynamo = new aws.DynamoDB.DocumentClient({ region })
 
 
+// README: [apidoc](https://apidocjs.com)
+
 /**
- * @api {post} /orders create an order on ddbb =)
+ * @api {post} /orders create a new order
  * @apiName CreateOrder
  * @apiGroup Orders
- * @apiVersion  1.1.1
- *
- * @apiBody {OrderJSON} order order
- * @apiSuccess {OrderJSON} log newly created log.
- * @apiSuccessExample {OrderJSON} Success-Response:
- * {
- *    "username": "alejo",
- *    "date": "1656017418934",
- *    "notes": [
- *     "sample text"
- *    ],
- *    "options": {
- *     "bowType": "recurve",
- *     "category": "junior",
- *     "gender": "male"
- *    },
- *    "value": 90,
- *    "_autoapprove": 1656018019
- * }
  * 
+ * @apiBody {String} id orderId
+ * @apiBody {String} customer the new order to be created
+ * @apiBody {String} [staff] the new order to be created
+ * @apiBody {String} [_createdAt] the new order to be created
+ * @apiBody {String} [_expireOn] the new order to be created
+ * @apiBody {String} [_expireOn] the new order to be created
+ * 
+ * @apiBody {Object} items drinks and means in the order
+ * @apiBody {String} [items[name]] name of the item
+ * @apiBody {String} [items[type]] type of the item
+ * @apiBody {String} [items[qty]] quantity
+ * 
+ * 
+ * @apiSuccess (200) {Order} the newly created order
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "username": "alejo",
+ *        "date": "1656017418934",
+ *        "notes": [
+ *         "sample text"
+ *        ],
+ *        "options": {
+ *         "bowType": "recurve",
+ *         "category": "junior",
+ *         "gender": "male"
+ *        },
+ *        "value": 90,
+ *        "_autoapprove": 1656018019
+ *     }
  */
 async function handler(event) {
     console.log('\n\n', ordersTable, '\n\n')

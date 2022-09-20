@@ -5,22 +5,12 @@ const aws = require('aws-sdk')
 
 
 /**
- * 
- * @api {post} /authenticate authenticate
+ * @api {post} /authenticate Authenticate with user/pass
  * @apiName Authenticate
  * @apiGroup Auth
- * @apiVersion  1.1.1
- * 
- * 
- * @apiSuccess (200) {type} name description
- * 
- * 
- * @apiSuccessExample {type} Success-Response:
- * {
- *     token : 'json.web.token'
- * }
- * 
- * 
+ *
+ *
+ * @apiSuccess {String} token auth token.
  */
 async function handler(event) {
     const eventJson = JSON.stringify(event, null, 2)

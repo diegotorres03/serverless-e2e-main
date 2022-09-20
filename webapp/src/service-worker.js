@@ -26,7 +26,7 @@ const staticAssets = [
 
 self.addEventListener("install", (event) => {
     // console.log('on install')
-    event.waitUntill(
+    event.waitUntil(
         caches.open(staticCache)
             .then(cache => cache.addAll(staticAssets))
             .then(() => console.log('caching static assets'))
@@ -38,7 +38,7 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
     console.log('on activate')
-    event.waitUntill(
+    event.waitUntil(
         caches.keys().then(keys => Promise
             .all(keys
                 .filter(key => key !== staticCache)
